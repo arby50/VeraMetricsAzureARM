@@ -27,7 +27,6 @@
   },
   "variables": {
     "adminUsername": "jwdillonAdmin",
-    "adminPublicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDK1sefvQzUpERht/Do9u7BRYQLCMkCTSRUoEDnM+g4ODFZwcvsme5glzXJY91a3xK9RIwtvNeBFfvnUloGA3tfkmXUpC4EK7U9Zf8V650TMp1b5MMzBQ1X3NFzedDnUkq19qQPY3dv01oj0bIEggl7R2PLeBWBmXr2Nq11oYvbwRlZt3LmD7wvE+UegXkzo7dBvzAnH/d7Wua+3LUJRKlYx/CjPfpZticma1j3QEJObBRVtZaoeKA1Pk+qsKYTnozr9LkH/VmttIwElyC1vn69ukEpS0REnzi05sGm1QEEhtYkuaZT6BMdA+04P+oGRSKyIEVemaxiDXRg/uj6jhmdIKzfG3gLchVmHQcabZ7JDoaUwo+tgFRBHBHGJkTiYYRF6Xj985axPiEBVvh+QFzs39NfyrHfWbM3RmDxn0YV2kDNT3l0zhfCbpnfVmPS2X8pV5sPP3H24cNFZUinci91qGAr4bEeQR30z9qneHFc5wIxzmfXWROZJETAdRYp+b0=",
     "networkSecurityGroupName": "[format('{0}-nsg', parameters('instanceName'))]",
     "publicIPAddressName": "[format('{0}-pip', toLower(parameters('instanceName')))]",
     "networkInterfaceName": "[format('{0}-nic', parameters('instanceName'))]",
@@ -194,6 +193,11 @@
           "imageReference": {
             "id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/cql-test3_group/providers/Microsoft.Compute/galleries/cql_test3_compute_gallery/images/cql-test3-vm-image-definition/versions/0.0.1"
           }
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[variables('adminUsername')]",
+          "disablePasswordAuthentication": false
         },
         "networkProfile": {
           "networkInterfaces": [
