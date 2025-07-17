@@ -191,7 +191,7 @@
             }
           },
           "imageReference": {
-            "id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/cql-test3_group/providers/Microsoft.Compute/galleries/cql_test3_compute_gallery/images/cql-test3-vm-image-definition/versions/0.0.1"
+            "id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/JWDillonAppImagesRG/providers/Microsoft.Compute/galleries/JWDillonProdGallery/images/VeraMetricsEngine/versions/1.0.19"
           }
         },
         "osProfile": {
