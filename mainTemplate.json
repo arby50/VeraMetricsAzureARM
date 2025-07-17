@@ -197,7 +197,9 @@
         "osProfile": {
           "computerName": "[variables('vmName')]",
           "adminUsername": "[variables('adminUsername')]",
-          "disablePasswordAuthentication": true
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true
+          }
         },
         "networkProfile": {
           "networkInterfaces": [
