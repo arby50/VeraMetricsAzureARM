@@ -198,7 +198,15 @@
           "computerName": "[variables('vmName')]",
           "adminUsername": "[variables('adminUsername')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": true
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[format('/home/{0}/.ssh/authorized_keys', variables('adminUsername'))]",
+                  "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7laRyN4B3YZmVrDEZLZoIuDep9OtVwikHFQMmkjdgBsOI9P6j3CJEw7W9Z3QtR5N8JkZKwVQRHE5LlO9XP6w5Y4yF4i4X2z7qKJGNjHr2mY+9YRt4L6yOyQa6Zl7F placeholder-key-replaced-by-script"
+                }
+              ]
+            }
           }
         },
         "networkProfile": {
