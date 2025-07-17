@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/createuidefinition/2018-09-01/createuidefinition.schema.json",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.1",
+  "parameters": {
+    "basics": [
+      {
+        "name": "nameGroup",
+        "displayName": "Deployment Details",
+        "elements": [
+          {
+            "name": "instanceName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Application Name",
+            "defaultValue": "[resourceGroup().name]",
+            "toolTip": "A unique name for your Flask application deployment. This will be used for resource naming.",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "validationMessage": "Application name can only contain letters and numbers, and be up to 24 characters long."
+            }
+          },
+          {
+            "name": "location",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Region",
+            "toolTip": "The Azure region where your Flask application resources will be deployed.",
+            "constraints": {
+              "allowedValues": [
+                "eastus",
+                "westus",
+                "centralus"
+              ],
+              "required": true
+            },
+            "defaultValue": "[resourceGroup().location]"
+          },
+          {
+            "name": "vmSize",
+            "type": "Microsoft.Compute.SizeSelector",
+            "label": "Virtual Machine Size",
+            "toolTip": "Select the size of the virtual machine. This choice affects cost and performance.",
+            "defaultValue": "Standard_B4ms",
+            "recommendedSizes": [
+              "Standard_B1ms",
+              "Standard_B1s",
+              "Standard_B2ms",
+              "Standard_B2s"
+            ],
+            "constraints": {
+              "minMemory": 1,
+              "minCores": 1
+            },
+            "visible": true
+          }
+        ]
+      }
+    ],
+    "steps": [], 
+    "outputs": {
+      "instanceName": "[parameters('basics').nameGroup.instanceName]",
+      "location": "[parameters('basics').nameGroup.location]",
+      "vmSize": "[parameters('basics').nameGroup.vmSize]"
+    }
+  }
+}

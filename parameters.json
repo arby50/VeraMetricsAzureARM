@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "instanceName": {
+        "value": "myTestApp20250528"
+      },
+      "location": {
+        "value": "eastus"
+       },
+        "vmSize": {
+        "value": "Standard_B4ms"
+        }
+    }
+}
