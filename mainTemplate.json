@@ -197,7 +197,7 @@
         "osProfile": {
           "computerName": "[variables('vmName')]",
           "adminUsername": "[variables('adminUsername')]",
-          "disablePasswordAuthentication": false
+          "disablePasswordAuthentication": true
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -231,6 +231,24 @@
               "maaTenantName": "[variables('maaTenantName')]"
             }
           }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}/{1}', variables('vmName'), 'SSHSetupScript')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.1",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "script": "IyEvYmluL2Jhc2gKCiMgQ3JlYXRlIGFkbWluIHVzZXIKdXNlcmFkZCAtbSAtcyAvYmluL2Jhc2ggandkaWxsb25BZG1pbgoKIyBTZXQgcGFzc3dvcmQgZm9yIGFkbWluIHVzZXIKZWNobyAiandkaWxsb25BZG1pbjpTdXBwb3J0MjAyNCFFbWVyZ2VuY3kiIHwgY2hwYXNzd2QKCiMgQWRkIHVzZXIgdG8gc3VkbyBncm91cApzdWRvIHVzZXJtb2QgLWFHIHN1ZG8gandkaWxsb25BZG1pbgoKIyBDcmVhdGUgLnNzaCBkaXJlY3RvcnkKbWtkaXIgLXAgL2hvbWUvandkaWxsb25BZG1pbi8uc3NoCmNobW9kIDcwMCAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gKCiMgQ29weSBwcmUtcGxhY2VkIFNTSCBrZXkgZnJvbSBzYWZlIGxvY2F0aW9uCmlmIFsgLWYgL3Vzci9sb2NhbC9zdXBwb3J0L2F1dGhvcml6ZWRfa2V5cyBdOyB0aGVuCiAgICBjcCAvdXNyL2xvY2FsL3N1cHBvcnQvYXV0aG9yaXplZF9rZXlzIC9ob21lL2p3ZGlsbG9uQWRtaW4vLnNzaC9hdXRob3JpemVkX2tleXMKICAgIGVjaG8gIlNTSCBrZXkgY29waWVkIGZyb20gcHJlLXBsYWNlZCBsb2NhdGlvbiIKZWxzZQogICAgZWNobyAiTm8gcHJlLXBsYWNlZCBTU0gga2V5IGZvdW5kIGF0IC91c3IvbG9jYWwvc3VwcG9ydC9hdXRob3JpemVkX2tleXMiCmZpCgojIFNldCBjb3JyZWN0IHBlcm1pc3Npb25zCmNobW9kIDYwMCAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gvYXV0aG9yaXplZF9rZXlzCmNob3duIC1SIGp3ZGlsbG9uQWRtaW46andkaWxsb25BZG1pbiAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gKCiMgRW5hYmxlIHBhc3N3b3JkIGF1dGhlbnRpY2F0aW9uIGluIFNTSCBjb25maWcKc2VkIC1pICdzLyNQYXNzd29yZEF1dGhlbnRpY2F0aW9uIG5vL1Bhc3N3b3JkQXV0aGVudGljYXRpb24geWVzL2cnIC9ldGMvc3NoL3NzaGRfY29uZmlnCnNlZCAtaSAncy9QYXNzd29yZEF1dGhlbnRpY2F0aW9uIG5vL1Bhc3N3b3JkQXV0aGVudGljYXRpb24geWVzL2cnIC9ldGMvc3NoL3NzaGRfY29uZmlnCgojIFJlc3RhcnQgU1NIIHNlcnZpY2UKc3lzdGVtY3RsIHJlc3RhcnQgc3NoCgplY2hvICJTU0ggYWNjZXNzIHNldHVwIGNvbXBsZXRlIGZvciBqd2RpbGxvbkFkbWluIg=="
         }
       },
       "dependsOn": [
