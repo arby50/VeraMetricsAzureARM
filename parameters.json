@@ -5,9 +5,6 @@
       "instanceName": {
         "value": "myTestApp20250528"
       },
-      "location": {
-        "value": "eastus"
-       },
         "vmSize": {
         "value": "Standard_B4ms"
         }
