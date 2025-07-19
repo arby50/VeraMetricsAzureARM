@@ -10,33 +10,13 @@
         "label": "Application Name",
         "defaultValue": "verametrics-001",
         "constraints": {
-          "required": true,
-          "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
-          "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only."
+          "required": true
         }
-      },
-      {
-        "name": "vmSize",
-        "type": "Microsoft.Compute.SizeSelector",
-        "label": "Virtual Machine Size",
-        "recommendedSizes": [
-          "Standard_B2s",
-          "Standard_B4ms"
-        ],
-        "constraints": {
-          "allowedSizes": [
-            "Standard_B2s",
-            "Standard_B4ms",
-            "Standard_D2s_v3"
-          ]
-        },
-        "osPlatform": "Linux"
       }
     ],
     "steps": [],
     "outputs": {
-      "instanceName": "[basics('instanceName')]",
-      "vmSize": "[basics('vmSize')]"
+      "instanceName": "[basics('instanceName')]"
     }
   }
 }
