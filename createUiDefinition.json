@@ -5,18 +5,23 @@
   "parameters": {
     "basics": [
       {
-        "name": "instanceName",
-        "type": "Microsoft.Common.TextBox",
-        "label": "Application Name",
-        "defaultValue": "verametrics-001",
+        "name": "location",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Location",
+        "defaultValue": "[deployment().location]",
+        "toolTip": "The location for the resources.",
         "constraints": {
-          "required": true
+          "allowedValues": [
+            "eastus",
+            "westus",
+            "westeurope"
+          ]
         }
       }
     ],
     "steps": [],
     "outputs": {
-      "instanceName": "[basics('instanceName')]"
+      "location": "[steps('basics')[0].outputs.location]"
     }
   }
 }
