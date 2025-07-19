@@ -1,4 +1,3 @@
-
 {
   "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
   "handler": "Microsoft.Azure.CreateUIDef",
@@ -10,71 +9,34 @@
         "type": "Microsoft.Common.TextBox",
         "label": "Application Name",
         "defaultValue": "verametrics-001",
-        "toolTip": "A unique name for your application deployment. This will be used for resource naming.",
         "constraints": {
           "required": true,
           "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
-          "validationMessage": "Application name must be 3-24 characters, start and end with alphanumeric characters, and contain only lowercase letters, numbers, and hyphens."
+          "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only."
         }
       },
       {
         "name": "vmSize",
         "type": "Microsoft.Compute.SizeSelector",
         "label": "Virtual Machine Size",
-        "toolTip": "Select the size of the virtual machine. This choice affects cost and performance.",
         "recommendedSizes": [
           "Standard_B2s",
-          "Standard_B4ms",
-          "Standard_D2s_v3",
-          "Standard_D4s_v3"
+          "Standard_B4ms"
         ],
         "constraints": {
           "allowedSizes": [
             "Standard_B2s",
             "Standard_B4ms",
-            "Standard_D2s_v3",
-            "Standard_D4s_v3"
+            "Standard_D2s_v3"
           ]
         },
-        "osPlatform": "Linux",
-        "count": 1
+        "osPlatform": "Linux"
       }
     ],
-    "steps": [
-      {
-        "name": "marketplaceConfig",
-        "label": "Marketplace Configuration",
-        "elements": [
-          {
-            "name": "marketplaceSubscriptionId",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Marketplace Subscription ID",
-            "defaultValue": "",
-            "toolTip": "Azure Marketplace subscription ID (automatically populated from marketplace)",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
-            "name": "customerEmail",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Customer Email",
-            "defaultValue": "",
-            "toolTip": "Customer email for billing and notifications",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-              "validationMessage": "Please enter a valid email address"
-            }
-          }
-        ]
-      }
-    ],
+    "steps": [],
     "outputs": {
       "instanceName": "[basics('instanceName')]",
-      "vmSize": "[basics('vmSize')]",
-      "marketplaceSubscriptionId": "[steps('marketplaceConfig').marketplaceSubscriptionId]",
-      "customerEmail": "[steps('marketplaceConfig').customerEmail]"
+      "vmSize": "[basics('vmSize')]"
     }
   }
 }
