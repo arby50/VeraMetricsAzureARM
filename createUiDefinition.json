@@ -1,3 +1,4 @@
+
 {
   "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
   "handler": "Microsoft.Azure.CreateUIDef",
@@ -5,23 +6,21 @@
   "parameters": {
     "basics": [
       {
-        "name": "location",
-        "type": "Microsoft.Common.DropDown",
-        "label": "Location",
-        "defaultValue": "[deployment().location]",
-        "toolTip": "The location for the resources.",
+        "name": "instanceName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Application Name",
+        "defaultValue": "verametrics-001",
+        "toolTip": "Enter a unique name for your application",
         "constraints": {
-          "allowedValues": [
-            "eastus",
-            "westus",
-            "westeurope"
-          ]
+          "required": true,
+          "regex": "^[a-z0-9-]{3,24}$",
+          "validationMessage": "Name must be 3-24 characters and contain only lowercase letters, numbers, and hyphens"
         }
       }
     ],
     "steps": [],
     "outputs": {
-      "location": "[steps('basics')[0].outputs.location]"
+      "instanceName": "[basics('instanceName')]"
     }
   }
 }
