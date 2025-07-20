@@ -1,4 +1,3 @@
-
 {
   "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
   "handler": "Microsoft.Azure.CreateUIDef",
@@ -10,17 +9,34 @@
         "type": "Microsoft.Common.TextBox",
         "label": "Application Name",
         "defaultValue": "verametrics-001",
-        "toolTip": "Enter a unique name for your application",
         "constraints": {
           "required": true,
-          "regex": "^[a-z0-9-]{3,24}$",
-          "validationMessage": "Name must be 3-24 characters and contain only lowercase letters, numbers, and hyphens"
+          "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
+          "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only."
         }
+      },
+      {
+        "name": "vmSize",
+        "type": "Microsoft.Compute.SizeSelector",
+        "label": "Virtual Machine Size",
+        "recommendedSizes": [
+          "Standard_B2s",
+          "Standard_B4ms"
+        ],
+        "constraints": {
+          "allowedSizes": [
+            "Standard_B2s",
+            "Standard_B4ms",
+            "Standard_D2s_v3"
+          ]
+        },
+        "osPlatform": "Linux"
       }
     ],
     "steps": [],
     "outputs": {
-      "instanceName": "[basics('instanceName')]"
+      "instanceName": "[basics('instanceName')]",
+      "vmSize": "[basics('vmSize')]"
     }
   }
 }
