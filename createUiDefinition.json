@@ -60,7 +60,7 @@
                     ]
                 }
             ]
-        }    
+        },
       "outputs": {
           "parameters": {
               "instanceName": "[steps('basics').instanceName]",
