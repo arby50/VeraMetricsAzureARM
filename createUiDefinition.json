@@ -1,74 +1,73 @@
-
 {
-    "$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
-    "view": {
-        "kind": "Form",
-        "properties": {
-            "title": "Deploy VeraMetrics Engine",
-            "steps": [
-                {
-                    "name": "basics",
-                    "label": "Basics",
-                    "elements": [
-                        {
-                            "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope",
-                            "location": {
-                                "resourceTypes": [
-                                    "microsoft.resources/resourcegroups"
-                                ]
-                            }
-                        },
-                        {
-                            "name": "instanceName",
-                            "type": "Microsoft.Common.TextBox",
-                            "label": "Application Name",
-                            "subLabel": "",
-                            "defaultValue": "verametrics-001",
-                            "toolTip": "The unique name for this instance of the Managed Application.",
-                            "constraints": {
-                                "required": true,
-                                "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
-                                "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only.",
-                                "validations": []
-                            },
-                            "visible": true
-                        },
-                        {
-                            "name": "vmSize",
-                            "type": "Microsoft.Compute.SizeSelector",
-                            "label": "Virtual Machine Size",
-                            "subLabel": "",
-                            "recommendedSizes": [
-                                "Standard_B2s",
-                                "Standard_B4ms"
-                            ],
-                            "constraints": {
-                                "allowedSizes": [
-                                    "Standard_B2s",
-                                    "Standard_B4ms",
-                                    "Standard_D2s_v3"
-                                ],
-                                "required": true
-                            },
-                            "options": {
-                                "hideDiskTypeFilter": false
-                            },
-                            "osPlatform": "Linux",
-                            "visible": true
-                        }
-                    ]
-                }
-            ]
-        },
-      "outputs": {
-          "parameters": {
-              "instanceName": "[steps('basics').instanceName]",
-              "vmSize": "[steps('basics').vmSize]"
-          },
-          "kind": "ResourceGroup",
-          "location": "[steps('basics').resourceScope.location.name]",
-          "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
-      }
+  "$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+  "view": {
+    "kind": "Form",
+    "properties": {
+      "title": "Deploy VeraMetrics Engine",
+      "steps": [
+        {
+          "name": "basics",
+          "label": "Basics",
+          "elements": [
+            {
+              "name": "resourceScope",
+              "type": "Microsoft.Common.ResourceScope",
+              "location": {
+                "resourceTypes": [
+                  "microsoft.resources/resourcegroups"
+                ]
+              }
+            },
+            {
+              "name": "instanceName",
+              "type": "Microsoft.Common.TextBox",
+              "label": "Application Name",
+              "subLabel": "",
+              "defaultValue": "verametrics-001",
+              "toolTip": "The unique name for this instance of the Managed Application.",
+              "constraints": {
+                "required": true,
+                "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
+                "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only.",
+                "validations": []
+              },
+              "visible": true
+            },
+            {
+              "name": "vmSize",
+              "type": "Microsoft.Compute.SizeSelector",
+              "label": "Virtual Machine Size",
+              "subLabel": "",
+              "recommendedSizes": [
+                "Standard_B2s",
+                "Standard_B4ms"
+              ],
+              "constraints": {
+                "allowedSizes": [
+                  "Standard_B2s",
+                  "Standard_B4ms",
+                  "Standard_D2s_v3"
+                ],
+                "required": true
+              },
+              "options": {
+                "hideDiskTypeFilter": false
+              },
+              "osPlatform": "Linux",
+              "visible": true
+            }
+          ]
+        }
+      ]
+    },
+    "outputs": {
+      "parameters": {
+        "instanceName": "[steps('basics').instanceName]",
+        "vmSize": "[steps('basics').vmSize]"
+      },
+      "kind": "ResourceGroup",
+      "location": "[steps('basics').resourceScope.location.name]",
+      "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
     }
+  }
 }
