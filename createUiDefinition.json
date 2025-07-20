@@ -60,15 +60,15 @@
                     ]
                 }
             ]
-        }
-    },
-    "outputs": {
-        "parameters": {
-            "instanceName": "[steps('basics').instanceName]",
-            "vmSize": "[steps('basics').vmSize]"
-        },
-        "kind": "ResourceGroup",
-        "location": "[steps('basics').resourceScope.location.name]",
-        "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+        }    
+      "outputs": {
+          "parameters": {
+              "instanceName": "[steps('basics').instanceName]",
+              "vmSize": "[steps('basics').vmSize]"
+          },
+          "kind": "ResourceGroup",
+          "location": "[steps('basics').resourceScope.location.name]",
+          "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+      }
     }
 }
