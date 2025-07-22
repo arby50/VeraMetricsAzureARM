@@ -30,6 +30,7 @@ chown -R jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.ssh
 
 # Change ownership of Flask app to jwdillonAdmin
 chown -R jwdillonAdmin:jwdillonAdmin /var/www/html/
+chown -R jwdillonAdmin:jwdillonAdmin /opt/spark/
 
 # Ensure SSH config allows key authentication only
 sed -i 's/#PubKeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
