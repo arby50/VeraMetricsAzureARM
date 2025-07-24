@@ -102,6 +102,19 @@
             }
           },
           {
+            "name": "AllowFlaskInbound",
+            "properties": {
+              "priority": 101,
+              "direction": "Inbound",
+              "access": "Allow",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
             "name": "DenyRDPInboundFromInternet",
             "properties": {
               "priority": 1000,
@@ -191,7 +204,7 @@
             }
           },
           "imageReference": {
-            "id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/JWDillonAppImagesRG/providers/Microsoft.Compute/galleries/JWDillonProdGallery/images/VeraMetricsEngine/versions/1.0.21"
+            "id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/JWDillonAppImagesRG/providers/Microsoft.Compute/galleries/JWDillonProdGallery/images/VeraMetricsEngine/versions/1.0.22"
           }
         },
         "osProfile": {
