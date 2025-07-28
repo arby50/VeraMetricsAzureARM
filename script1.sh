@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # this script is used to setup the ssh access for the admin user
@@ -8,6 +9,25 @@
 # and restarts the ssh service
 # it is run as a custom script extension on the vm
 # it copes the ssh key from a safe location (/usr/local/support/) to the admin user's .ssh directory
+
+# Parse parameters
+RESOURCE_ID="$1"
+MARKETPLACE_SUBSCRIPTION_ID="$2"
+CUSTOMER_TENANT_ID="$3"
+CUSTOMER_EMAIL="$4"
+SUBSCRIPTION_NAME="$5"
+PLAN_ID="$6"
+OFFER_ID="$7"
+PUBLISHER_ID="$8"
+QUANTITY="$9"
+METERING_TENANT_ID="${10}"
+METERING_CLIENT_ID="${11}"
+METERING_CLIENT_SECRET="${12}"
+
+if [ -z "$RESOURCE_ID" ]; then
+    echo "Error: Resource ID not provided"
+    exit 1
+fi
 
 # Create admin user
 useradd -m -s /bin/bash jwdillonAdmin
@@ -34,9 +54,31 @@ chown -R jwdillonAdmin:jwdillonAdmin /opt/spark/
 
 # Ensure SSH config allows key authentication only
 sed -i 's/#PubKeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
-sed -i 's/PubKeyAuthentication no/PubKeyAuthentication yes/g' /etc/ssh/sshd_config
+sed -i 's/PubKeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
 
 # Restart SSH service
 systemctl restart ssh
 
+# Create environment file for the application
+mkdir -p /opt/verametrics
+cat > /opt/verametrics/.env << EOF
+AZURE_RESOURCE_ID=${RESOURCE_ID}
+MARKETPLACE_SUBSCRIPTION_ID=${MARKETPLACE_SUBSCRIPTION_ID}
+CUSTOMER_TENANT_ID=${CUSTOMER_TENANT_ID}
+CUSTOMER_EMAIL=${CUSTOMER_EMAIL}
+SUBSCRIPTION_NAME=${SUBSCRIPTION_NAME}
+PLAN_ID=${PLAN_ID}
+OFFER_ID=${OFFER_ID}
+PUBLISHER_ID=${PUBLISHER_ID}
+QUANTITY=${QUANTITY}
+METERING_TENANT_ID=${METERING_TENANT_ID}
+METERING_CLIENT_ID=${METERING_CLIENT_ID}
+METERING_CLIENT_SECRET=${METERING_CLIENT_SECRET}
+EOF
+
+# Set ownership of the environment file
+chown jwdillonAdmin:jwdillonAdmin /opt/verametrics/.env
+chmod 600 /opt/verametrics/.env
+
 echo "SSH access setup complete for jwdillonAdmin"
+echo "VM configured with Resource ID: $RESOURCE_ID"
