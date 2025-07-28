@@ -60,8 +60,8 @@ sed -i 's/PubKeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_conf
 systemctl restart ssh
 
 # Create environment file for the application
-mkdir -p /opt/verametrics
-cat > /opt/verametrics/.env << EOF
+# mkdir -p /opt/verametrics
+cat > /home/jwdillonAdmin/.env << EOF
 AZURE_RESOURCE_ID=${RESOURCE_ID}
 MARKETPLACE_SUBSCRIPTION_ID=${MARKETPLACE_SUBSCRIPTION_ID}
 CUSTOMER_TENANT_ID=${CUSTOMER_TENANT_ID}
@@ -77,8 +77,8 @@ METERING_CLIENT_SECRET=${METERING_CLIENT_SECRET}
 EOF
 
 # Set ownership of the environment file
-chown jwdillonAdmin:jwdillonAdmin /opt/verametrics/.env
-chmod 600 /opt/verametrics/.env
+chown jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.env
+chmod 600 /home/jwdillonAdmin/.env
 
 echo "SSH access setup complete for jwdillonAdmin"
 echo "VM configured with Resource ID: $RESOURCE_ID"
