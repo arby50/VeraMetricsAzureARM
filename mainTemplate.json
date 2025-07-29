@@ -72,24 +72,6 @@
 			"metadata": {
 				"description": "Quantity"
 			}
-		},
-		"meteringTenantId": {
-			"type": "string",
-			"metadata": {
-				"description": "Metering tenant ID"
-			}
-		},
-		"meteringClientId": {
-			"type": "string",
-			"metadata": {
-				"description": "Metering client ID"
-			}
-		},
-		"meteringClientSecret": {
-			"type": "securestring",
-			"metadata": {
-				"description": "Metering client secret"
-			}
 		}
 	},
 	"variables": {
