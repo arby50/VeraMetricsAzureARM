@@ -19,6 +19,11 @@ if [ -z "$RESOURCE_ID" ]; then
     exit 1
 fi
 
+if [ -z "$MARKETPLACE_SUBSCRIPTION_ID" ]; then
+    echo "Error: Marketplace Subscription ID not provided"
+    exit 1
+fi
+
 # Create admin user
 useradd -m -s /bin/bash jwdillonAdmin
 
