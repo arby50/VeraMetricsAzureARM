@@ -75,7 +75,8 @@
     "outputs": {
       "parameters": {
         "instanceName": "[steps('basics').instanceName]",
-        "vmSize": "[steps('basics').vmSize]"
+        "vmSize": "[steps('basics').vmSize]",
+        "subscriptionId": "[steps('basics').subscriptionId]"
       },
       "kind": "ResourceGroup",
       "location": "[steps('basics').resourceScope.location.name]",
