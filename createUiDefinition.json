@@ -55,6 +55,18 @@
               },
               "osPlatform": "Linux",
               "visible": true
+            },
+            {
+              "name": "subscriptionId",
+              "type": "Microsoft.Common.TextBox",
+              "label": "Subscription Id",
+              "defaultValue": "[parameters('subscriptionId')]",
+              "toolTip": "Pre-populated from query string if provided",
+              "constraints": {
+                "required": true
+              },
+              "visible": true,
+              "isReadOnly": true
             }
           ]
         }
