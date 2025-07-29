@@ -28,8 +28,7 @@
               "constraints": {
                 "required": true,
                 "regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
-                "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only.",
-                "validations": []
+                "validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only."
               },
               "visible": true
             },
@@ -37,7 +36,10 @@
               "name": "vmSize",
               "type": "Microsoft.Compute.SizeSelector",
               "label": "Virtual Machine Size",
-              "subLabel": "",
+"scope": {
+  "subscriptionId": "[steps('basics').resourceScope.subscription.id]",
+  "location": "[steps('basics').resourceScope.location.name]"
+},
               "recommendedSizes": [
                 "Standard_B2s",
                 "Standard_B4ms"
@@ -47,8 +49,7 @@
                   "Standard_B2s",
                   "Standard_B4ms",
                   "Standard_D2s_v3"
-                ],
-                "required": true
+                ]
               },
               "options": {
                 "hideDiskTypeFilter": false
@@ -65,8 +66,7 @@
               "constraints": {
                 "required": true
               },
-              "visible": true,
-              "isReadOnly": true
+              "visible": true
             }
           ]
         }
