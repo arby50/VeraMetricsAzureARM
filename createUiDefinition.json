@@ -22,7 +22,6 @@
               "name": "instanceName",
               "type": "Microsoft.Common.TextBox",
               "label": "Application Name",
-              "subLabel": "",
               "defaultValue": "verametrics-001",
               "toolTip": "The unique name for this instance of the Managed Application.",
               "constraints": {
@@ -36,10 +35,10 @@
               "name": "vmSize",
               "type": "Microsoft.Compute.SizeSelector",
               "label": "Virtual Machine Size",
-"scope": {
-  "subscriptionId": "[steps('basics').resourceScope.subscription.id]",
-  "location": "[steps('basics').resourceScope.location.name]"
-},
+              "scope": {
+                "subscriptionId": "[steps('basics').resourceScope.subscription.id]",
+                "location": "[steps('basics').resourceScope.location.name]"
+              },
               "recommendedSizes": [
                 "Standard_B2s",
                 "Standard_B4ms"
@@ -61,7 +60,7 @@
               "name": "subscriptionId",
               "type": "Microsoft.Common.TextBox",
               "label": "Subscription Id",
-              "defaultValue": "[parameters('subscriptionId')]",
+              "defaultValue": "MTM4YzFlN2UtYTc3YS00OWZjLWNhNjktNzVlOTI4M2MzMjZmOnZlcmFtZXRyaWNzX2VuZ2luZV9zYWFzX3BsYW46ZGQ2NmMyOGRlMDhlMmM3Ng==",
               "toolTip": "Pre-populated from query string if provided",
               "constraints": {
                 "required": true
@@ -78,9 +77,6 @@
         "vmSize": "[steps('basics').vmSize]",
         "subscriptionId": "[steps('basics').subscriptionId]"
       },
-        "template": {
-    "uri": "https://raw.githubusercontent.com/arby50/VeraMetricsAzureARM/main/mainTemplate.json"
-  },
       "kind": "ResourceGroup",
       "location": "[steps('basics').resourceScope.location.name]",
       "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
