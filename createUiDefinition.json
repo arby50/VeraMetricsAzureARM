@@ -65,7 +65,7 @@
               "constraints": {
                 "required": true
               },
-              "visible": true
+              "visible": false
             }
           ]
         }
