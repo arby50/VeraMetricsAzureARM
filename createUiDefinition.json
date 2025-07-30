@@ -43,7 +43,7 @@
 								"Standard_E8s_v3"
 							],
   "constraints": {
-    "allowedSizes": [] 
+    "allowedSizes": []     
   },
   "options": {
     "hideDiskTypeFilter": false
