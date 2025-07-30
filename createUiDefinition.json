@@ -35,31 +35,22 @@
 							"name": "vmSize",
 							"type": "Microsoft.Compute.SizeSelector",
 							"label": "Virtual Machine Size",
-  "toolTip": "",
-  "recommendedSizes": [
+							"toolTip": "Choose your desired Linux VM size",
+							"recommendedSizes": [
 								"Standard_D4s_v3",
 								"Standard_D8s_v3",
 								"Standard_E4s_v3",
 								"Standard_E8s_v3"
 							],
-  "constraints": {
-    "allowedSizes": []     
-  },
-  "options": {
-    "hideDiskTypeFilter": false
-  },
-  "osPlatform": "Windows",
-  "imageReference": {
-    "publisher": "MicrosoftWindowsServer",
-    "offer": "WindowsServer",
-    "sku": "2012-R2-Datacenter"
-  },
-  "scope": {
-								"subscriptionId": "[steps('basics').resourceScope.subscription.id]",
-								"location": "[steps('basics').resourceScope.location.name]"
+							"constraints": {
+								"allowedSizes": []
 							},
-  "visible": true
-},
+							"options": {
+								"hideDiskTypeFilter": false
+							},
+							"osPlatform": "Linux",
+							"visible": true
+						},
 						{
 							"name": "subscriptionId",
 							"type": "Microsoft.Common.TextBox",
