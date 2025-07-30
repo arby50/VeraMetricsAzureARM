@@ -97,6 +97,19 @@
 					{
 						"name": "AllowFlaskInbound",
 						"properties": {
+							"priority": 100,
+							"direction": "Inbound",
+							"access": "Allow",
+							"protocol": "Tcp",
+							"sourcePortRange": "*",
+							"destinationPortRange": "5000",
+							"sourceAddressPrefix": "Internet",
+							"destinationAddressPrefix": "*"
+						}
+					},
+					{
+						"name": "AllowFlaskInbound",
+						"properties": {
 							"priority": 101,
 							"direction": "Inbound",
 							"access": "Allow",
