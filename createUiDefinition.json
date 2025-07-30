@@ -63,7 +63,7 @@
 							"constraints": {
 								"required": true
 							},
-							"visible": true
+							"visible": false
 						}
 					]
 				}
@@ -73,7 +73,7 @@
 			"parameters": {
 				"instanceName": "[steps('basics').instanceName]",
 				"vmSize": "[steps('basics').vmSize]",
-				"subscriptionId": "[steps('basics').subscriptionId]"
+				"subscriptionId": "[steps('basics').subscriptionId.defaultValue]"
 			},
 			"kind": "ResourceGroup",
 			"location": "[steps('basics').resourceScope.location.name]",
