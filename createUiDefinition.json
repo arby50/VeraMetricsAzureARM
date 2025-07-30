@@ -78,6 +78,9 @@
         "vmSize": "[steps('basics').vmSize]",
         "subscriptionId": "[steps('basics').subscriptionId]"
       },
+        "template": {
+    "uri": "https://raw.githubusercontent.com/arby50/VeraMetricsAzureARM/main/mainTemplate.json"
+  },
       "kind": "ResourceGroup",
       "location": "[steps('basics').resourceScope.location.name]",
       "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
