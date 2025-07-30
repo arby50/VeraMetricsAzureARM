@@ -184,10 +184,10 @@
 			"name": "[variables('publicIPAddressName')]",
 			"location": "[resourceGroup().location]",
 			"sku": {
-				"name": "Basic"
+				"name": "Standard"
 			},
 			"properties": {
-				"publicIPAllocationMethod": "Dynamic",
+				"publicIPAllocationMethod": "Static",
 				"publicIPAddressVersion": "IPv4",
 				"dnsSettings": {
 					"domainNameLabel": "[variables('publicIPAddressName')]"
