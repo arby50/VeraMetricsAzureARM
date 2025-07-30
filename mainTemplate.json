@@ -102,7 +102,7 @@
 							"access": "Allow",
 							"protocol": "Tcp",
 							"sourcePortRange": "*",
-							"destinationPortRange": "5000",
+							"destinationPortRange": "5000",   
 							"sourceAddressPrefix": "Internet",
 							"destinationAddressPrefix": "*"
 						}
