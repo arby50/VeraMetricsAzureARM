@@ -53,7 +53,7 @@
 							},
 							"osPlatform": "Linux",
 							"visible": true
-						}, 
+						},
 						{
 							"name": "subscriptionId",
 							"type": "Microsoft.Common.TextBox",
