@@ -37,15 +37,13 @@
 							"label": "Virtual Machine Size",
   "toolTip": "",
   "recommendedSizes": [
-    "Standard_D1",
-    "Standard_D2",
-    "Standard_D3"
-  ],
+								"Standard_D4s_v3",
+								"Standard_D8s_v3",
+								"Standard_E4s_v3",
+								"Standard_E8s_v3"
+							],
   "constraints": {
-    "allowedSizes": [],
-    "excludedSizes": [],
-    "numAvailabilityZonesRequired": 3,
-    "zone": "3"
+    "allowedSizes": []
   },
   "options": {
     "hideDiskTypeFilter": false
