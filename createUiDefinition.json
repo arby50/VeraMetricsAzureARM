@@ -54,7 +54,10 @@
     "offer": "WindowsServer",
     "sku": "2012-R2-Datacenter"
   },
-  "count": 2,
+  "scope": {
+								"subscriptionId": "[steps('basics').resourceScope.subscription.id]",
+								"location": "[steps('basics').resourceScope.location.name]"
+							},
   "visible": true
 },
 						{
