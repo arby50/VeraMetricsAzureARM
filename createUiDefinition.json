@@ -22,36 +22,30 @@
 							"name": "instanceName",
 							"type": "Microsoft.Common.TextBox",
 							"label": "Application Name",
-							"defaultValue": "verametrics-001",
+							"defaultValue": "verametrics001",
 							"toolTip": "The unique name for this instance of the Managed Application.",
-							"constraints": {
-								"required": true,
-								"regex": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$",
-								"validationMessage": "Must be 3-24 characters, lowercase letters, numbers, and hyphens only."
-							},
 							"visible": true
 						},
 						{
 							"name": "vmSize",
-							"type": "Microsoft.Compute.SizeSelector",
+							"type": "Microsoft.Common.DropDown",
 							"label": "Virtual Machine Size",
-							"toolTip": "Choose your desired Linux VM size",
-							"recommendedSizes": [
-								"Standard_D8s_v3",
-								"Standard_E8s_v3",
-								"Standard_D16s_v3",
-								"Standard_D32s_v3",
-								"Standard_E16s_v3",
-								"Standard_E32s_v3",
-								"Standard_E64s_v3"
+							"toolTip": "Choose your desired VM size",
+							"defaultValue": "Standard_B4ms",
+							"options": [
+								{
+									"label": "Standard_B4ms",
+									"value": "Standard_B4ms"
+								},
+								{
+									"label": "Standard_D8s_v3",
+									"value": "Standard_D8s_v3"
+								},
+								{
+									"label": "Standard_E8s_v3",
+									"value": "Standard_E8s_v3"
+								}
 							],
-							"constraints": {
-								"allowedSizes": []
-							},
-							"options": {
-								"hideDiskTypeFilter": false
-							},
-							"osPlatform": "Linux",
 							"visible": true
 						}
 					]
