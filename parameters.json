@@ -7,9 +7,6 @@
 		},
 		"vmSize": {
 			"value": "Standard_B4ms"
-		},
-		"subscriptionId": {
-			"value": "MTM4YzFlN2UtYTc3YS00OWZjLWNhNjktNzVlOTI4M2MzMjZmOnZlcmFtZXRyaWNzX2VuZ2luZV9zYWFzX3BsYW46ZGQ2NmMyOGRlMDhlMmM3Ng%3D%3D"
 		}
 	}
 }
