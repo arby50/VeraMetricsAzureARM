@@ -12,15 +12,9 @@
 
 # Parse parameters
 RESOURCE_ID="$1"
-MARKETPLACE_SUBSCRIPTION_ID="$2"
 
 if [ -z "$RESOURCE_ID" ]; then
     echo "Error: Resource ID not provided"
-    exit 1
-fi
-
-if [ -z "$MARKETPLACE_SUBSCRIPTION_ID" ]; then
-    echo "Error: Marketplace Subscription ID not provided"
     exit 1
 fi
 
@@ -58,7 +52,6 @@ systemctl restart ssh
 # mkdir -p /opt/verametrics
 cat > /home/jwdillonAdmin/.env << EOF
 AZURE_RESOURCE_ID=${RESOURCE_ID}
-MARKETPLACE_SUBSCRIPTION_ID=${MARKETPLACE_SUBSCRIPTION_ID}
 EOF
 
 # Set ownership of the environment file
