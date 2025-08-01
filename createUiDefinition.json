@@ -1,3 +1,4 @@
+
 {
 	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
 	"view": {
@@ -32,20 +33,22 @@
 							"label": "Virtual Machine Size",
 							"toolTip": "Choose your desired VM size",
 							"defaultValue": "Standard_B4ms",
-							"options": [
-								{
-									"label": "Standard_B4ms",
-									"value": "Standard_B4ms"
-								},
-								{
-									"label": "Standard_D8s_v3",
-									"value": "Standard_D8s_v3"
-								},
-								{
-									"label": "Standard_E8s_v3",
-									"value": "Standard_E8s_v3"
-								}
-							],
+							"constraints": {
+								"allowedValues": [
+									{
+										"label": "Standard_B4ms",
+										"value": "Standard_B4ms"
+									},
+									{
+										"label": "Standard_D8s_v3",
+										"value": "Standard_D8s_v3"
+									},
+									{
+										"label": "Standard_E8s_v3",
+										"value": "Standard_E8s_v3"
+									}
+								]
+							},
 							"visible": true
 						}
 					]
