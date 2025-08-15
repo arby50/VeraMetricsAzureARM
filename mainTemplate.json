@@ -51,7 +51,7 @@
 		"vmName": "[format('{0}-vm', parameters('vmInstanceName'))]",
 		"subnetAddressPrefix": "10.1.0.0/24",
 		"addressPrefix": "10.1.0.0/16",
-		"securityType": "TrustedLaunch",
+		"securityType": "Standard",
 		"osDiskType": "Standard_LRS",
 		"securityProfileJson": {
 			"uefiSettings": {
@@ -250,31 +250,7 @@
 				"[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
 			]
 		},
-		{
-			"condition": "[and(and(equals(variables('securityType'), 'TrustedLaunch'), variables('securityProfileJson').uefiSettings.secureBootEnabled), variables('securityProfileJson').uefiSettings.vTpmEnabled)]",
-			"type": "Microsoft.Compute/virtualMachines/extensions",
-			"apiVersion": "2023-09-01",
-			"name": "[format('{0}/{1}', variables('vmName'), variables('extensionName'))]",
-			"location": "[parameters('location')]",
-			"properties": {
-				"publisher": "[variables('extensionPublisher')]",
-				"type": "[variables('extensionName')]",
-				"typeHandlerVersion": "[variables('extensionVersion')]",
-				"autoUpgradeMinorVersion": true,
-				"enableAutomaticUpgrade": true,
-				"settings": {
-					"AttestationConfig": {
-						"MaaSettings": {
-							"maaEndpoint": "[variables('maaEndpoint')]",
-							"maaTenantName": "[variables('maaTenantName')]"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
-			]
-		},
+		
 		{
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"apiVersion": "2023-09-01",
