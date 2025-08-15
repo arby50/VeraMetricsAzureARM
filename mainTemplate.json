@@ -59,12 +59,12 @@
 				"vTpmEnabled": true
 			},
 			"securityType": "[variables('securityType')]"
-		},
-		"extensionName": "GuestAttestation",
-		"extensionPublisher": "Microsoft.Azure.Security.LinuxAttestation",
-		"extensionVersion": "1.0",
-		"maaTenantName": "GuestAttestation",
-		"maaEndpoint": "[substring('emptystring', 0, 0)]"
+		}
+		// "extensionName": "GuestAttestation",
+		// "extensionPublisher": "Microsoft.Azure.Security.LinuxAttestation",
+		// "extensionVersion": "1.0",
+		// "maaTenantName": "GuestAttestation",
+		// "maaEndpoint": "[substring('emptystring', 0, 0)]"
 	},
 	"resources": [
 		{
