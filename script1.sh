@@ -13,10 +13,22 @@
 RESOURCE_GROUP_ID="$1"
 SUBSCRIPTION_ID="$2"
 
-if [ -z "$RESOURCE_GROUP_ID" ] || [ -z "$SUBSCRIPTION_ID" ]; then
-    echo "Error: Resource Group ID or Subscription ID not provided"
-    exit 1
-fi
+# TODO: add this check back in
+# 20250815:Ryan->
+#      az login
+#      az group create --name test-template-rg --location eastus
+#      az deployment group validate --resource-group test-template-rg --template-file mainTemplate.json --parameters parameters.json
+#      az deployment group create --resource-group test-template-rg --template-file mainTemplate.json --parameters parameters.json --name test-deployment
+#      Resource: -c: line 18: syntax error: unexpected end of file\n'
+#      az group delete --name test-template-rg --yes --no-wait
+# if [ -z "$RESOURCE_GROUP_ID" ]; then
+#     echo "Error: Resource ID not provided"
+#     exit 1
+# fi
+# if [ -z "$SUBSCRIPTION_ID" ]; then
+#     echo "Error: Resource ID not provided"
+#     exit 1
+# fi
 
 # Create admin user
 useradd -m -s /bin/bash jwdillonAdmin
