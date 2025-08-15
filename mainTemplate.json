@@ -9,34 +9,50 @@
 		}
 	},
 	"parameters": {
-		"instanceName": {
+        "vmInstanceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The VM name"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "Select the VM size"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Select the Azure region for the resources"
+            }
+        },
+		"adminUsername": {
 			"type": "string",
+			"defaultValue": "jwdillonAdmin",
 			"metadata": {
-				"description": "The unique name for this instance of the Managed Application."
-			},
-			"minLength": 3,
-			"maxLength": 24
-		},
-		"vmSize": {
-			"type": "string",
-			"defaultValue": "Standard_B4ms",
-			"metadata": {
-				"description": "The size of the virtual machine."
+			"description": "Admin username for the VM"
 			}
 		}
 	},
 	"variables": {
-		"adminUsername": "jwdillonAdmin",
-		"networkSecurityGroupName": "[format('{0}-nsg', parameters('instanceName'))]",
-		"publicIPAddressName": "[format('{0}-pip', toLower(parameters('instanceName')))]",
-		"networkInterfaceName": "[format('{0}-nic', parameters('instanceName'))]",
-		"virtualNetworkName": "[format('{0}-vnet', parameters('instanceName'))]",
-		"subnetName": "[format('{0}-subnet', parameters('instanceName'))]",
-		"vmName": "[format('{0}-vm', parameters('instanceName'))]",
-		"osDiskType": "Standard_LRS",
+		"adminUsername": "[parameters('adminUsername')]",
+		"planInfo": {
+            "planID": "verametrics_engine_vm_plan",
+            "offerID": "verametrics_engine",
+            "publisher": "jwdillon_com"
+        },
+		"networkSecurityGroupName": "[format('{0}-nsg', parameters('vmInstanceName'))]",
+		"publicIPAddressName": "[format('{0}-pip', toLower(parameters('vmInstanceName')))]",
+		"networkInterfaceName": "[format('{0}-nic', parameters('vmInstanceName'))]",
+		"virtualNetworkName": "[format('{0}-vnet', parameters('vmInstanceName'))]",
+		"subnetName": "[format('{0}-subnet', parameters('vmInstanceName'))]",
+		"vmName": "[format('{0}-vm', parameters('vmInstanceName'))]",
 		"subnetAddressPrefix": "10.1.0.0/24",
 		"addressPrefix": "10.1.0.0/16",
 		"securityType": "TrustedLaunch",
+		"osDiskType": "Standard_LRS",
 		"securityProfileJson": {
 			"uefiSettings": {
 				"secureBootEnabled": true,
@@ -55,7 +71,7 @@
 			"type": "Microsoft.Network/networkInterfaces",
 			"apiVersion": "2023-09-01",
 			"name": "[variables('networkInterfaceName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"properties": {
 				"ipConfigurations": [
 					{
@@ -85,7 +101,7 @@
 			"type": "Microsoft.Network/networkSecurityGroups",
 			"apiVersion": "2024-05-01",
 			"name": "[variables('networkSecurityGroupName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"properties": {
 				"securityRules": [
 					{
@@ -134,7 +150,7 @@
 			"type": "Microsoft.Network/virtualNetworks",
 			"apiVersion": "2023-09-01",
 			"name": "[variables('virtualNetworkName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"properties": {
 				"addressSpace": {
 					"addressPrefixes": [
@@ -163,7 +179,7 @@
 			"type": "Microsoft.Network/publicIPAddresses",
 			"apiVersion": "2023-09-01",
 			"name": "[variables('publicIPAddressName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"sku": {
 				"name": "Standard"
 			},
@@ -180,22 +196,32 @@
 			"type": "Microsoft.Compute/virtualMachines",
 			"apiVersion": "2023-09-01",
 			"name": "[variables('vmName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
+			"plan": {
+                "name": "[variables('planInfo').planID]",
+                "product": "[variables('planInfo').offerID]",
+                "publisher": "[variables('planInfo').publisher]"
+            },
 			"properties": {
 				"hardwareProfile": {
 					"vmSize": "[parameters('vmSize')]"
 				},
-				"storageProfile": {
-					"osDisk": {
-						"createOption": "FromImage",
-						"managedDisk": {
-							"storageAccountType": "[variables('osDiskType')]"
-						}
-					},
-					"imageReference": {
-						"id": "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/JWDillonAppImagesRG/providers/Microsoft.Compute/galleries/JWDillonProdGallery/images/VeraMetricsEngine/versions/1.0.24"
-					}
-				},
+                "storageProfile": {
+                    "imageReference": {
+                        "offer": "[variables('planInfo').offerID]",
+                        "publisher": "[variables('planInfo').publisher]",
+                        "sku": "[variables('planInfo').planID]",
+                        "version": "latest"
+                    },
+                    "osdisk": {
+                        "name": "[concat(variables('vmName'), '-osDisk')]",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                           	"storageAccountType": "[variables('osDiskType')]"
+                        },
+                        "caching": "ReadWrite"
+                    }
+                },
 				"osProfile": {
 					"computerName": "[variables('vmName')]",
 					"adminUsername": "[variables('adminUsername')]",
@@ -229,7 +255,7 @@
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"apiVersion": "2023-09-01",
 			"name": "[format('{0}/{1}', variables('vmName'), variables('extensionName'))]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"properties": {
 				"publisher": "[variables('extensionPublisher')]",
 				"type": "[variables('extensionName')]",
@@ -253,13 +279,13 @@
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"apiVersion": "2023-09-01",
 			"name": "[format('{0}/{1}', variables('vmName'), 'SSHSetupScript')]",
-			"location": "[resourceGroup().location]",
+			"location": "[parameters('location')]",
 			"properties": {
 				"publisher": "Microsoft.Azure.Extensions",
 				"type": "CustomScript",
 				"typeHandlerVersion": "2.1",
 				"autoUpgradeMinorVersion": true,
-				"commandToExecute": "[concat('bash -c \"', base64ToString('IyEvYmluL2Jhc2gKCiMgdGhpcyBzY3JpcHQgaXMgdXNlZCB0byBzZXR1cCB0aGUgc3NoIGFjY2VzcyBmb3IgdGhlIGFkbWluIHVzZXIKIyBpdCBpcyBydW4gaW5zaWRlIHRoZSBtYWluVGVtcGxhdGUuanNvbiBmaWxlLCBiYXNlNjQgZW5jb2RlZAojIG1pY3Jvc29mdCByZXF1aXJlcyBzc2ggdWlkOnB3ZCBhdXRoIHRvIGJlIGVuYWJsZWQgd2hlbiBjcmVhdGlnIGZyb20gYSB0ZW1wbGF0ZQojIHRoaXMgc2NyaXB0IGRpc2FibGVzIGl0IGFuZCBzZXRzIHVwIHNzaCBrZXkgYXV0aAojIGl0IGFsc28gY2hhbmdlcyB0aGUgb3duZXJzaGlwIG9mIHRoZSBmbGFzayBhcHAgdG8gdGhlIGFkbWluIHVzZXIKIyBhbmQgcmVzdGFydHMgdGhlIHNzaCBzZXJ2aWNlCiMgaXQgaXMgcnVuIGFzIGEgY3VzdG9tIHNjcmlwdCBleHRlbnNpb24gb24gdGhlIHZtCiMgaXQgY29wZXMgdGhlIHNzaCBrZXkgZnJvbSBhIHNhZmUgbG9jYXRpb24gKC91c3IvbG9jYWwvc3VwcG9ydC8pIHRvIHRoZSBhZG1pbiB1c2VyJ3MgLnNzaCBkaXJlY3RvcnkKCiMgUGFyc2UgcGFyYW1ldGVycwpSRVNPVVJDRV9JRD0iJDEiCgppZiBbIC16ICIkUkVTT1VSQ0VfSUQiIF07IHRoZW4KICAgIGVjaG8gIkVycm9yOiBSZXNvdXJjZSBJRCBub3QgcHJvdmlkZWQiCiAgICBleGl0IDEKZmkKCiMgQ3JlYXRlIGFkbWluIHVzZXIKdXNlcmFkZCAtbSAtcyAvYmluL2Jhc2ggandkaWxsb25BZG1pbgoKIyBDcmVhdGUgLnNzaCBkaXJlY3RvcnkKbWtkaXIgLXAgL2hvbWUvandkaWxsb25BZG1pbi8uc3NoCmNobW9kIDcwMCAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gKCiMgQ29weSBwcmUtcGxhY2VkIFNTSCBrZXkgZnJvbSBzYWZlIGxvY2F0aW9uCmlmIFsgLWYgL3Vzci9sb2NhbC9zdXBwb3J0L2F1dGhvcml6ZWRfa2V5cyBdOyB0aGVuCiAgICBjcCAvdXNyL2xvY2FsL3N1cHBvcnQvYXV0aG9yaXplZF9rZXlzIC9ob21lL2p3ZGlsbG9uQWRtaW4vLnNzaC9hdXRob3JpemVkX2tleXMKICAgIGVjaG8gIlNTSCBrZXkgY29waWVkIGZyb20gcHJlLXBsYWNlZCBsb2NhdGlvbiIKZWxzZQogICAgZWNobyAiTm8gcHJlLXBsYWNlZCBTU0gga2V5IGZvdW5kIGF0IC91c3IvbG9jYWwvc3VwcG9ydC9hdXRob3JpemVkX2tleXMiCmZpCgojIFNldCBjb3JyZWN0IHBlcm1pc3Npb25zCmNobW9kIDYwMCAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gvYXV0aG9yaXplZF9rZXlzCmNob3duIC1SIGp3ZGlsbG9uQWRtaW46andkaWxsb25BZG1pbiAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gKCiMgQ2hhbmdlIG93bmVyc2hpcCBvZiBGbGFzayBhcHAgdG8gandkaWxsb25BZG1pbgpjaG93biAtUiBqd2RpbGxvbkFkbWluOmp3ZGlsbG9uQWRtaW4gL3Zhci93d3cvaHRtbC8KY2hvd24gLVIgandkaWxsb25BZG1pbjpqd2RpbGxvbkFkbWluIC9vcHQvc3BhcmsvCgojIEVuc3VyZSBTU0ggY29uZmlnIGFsbG93cyBrZXkgYXV0aGVudGljYXRpb24gb25seQpzZWQgLWkgJ3MvI1B1YktleUF1dGhlbnRpY2F0aW9uIHllcy9QdWJrZXlBdXRoZW50aWNhdGlvbiB5ZXMvZycgL2V0Yy9zc2gvc3NoZF9jb25maWcKc2VkIC1pICdzL1B1YktleUF1dGhlbnRpY2F0aW9uIG5vL1B1YmtleUF1dGhlbnRpY2F0aW9uIHllcy9nJyAvZXRjL3NzaC9zc2hkX2NvbmZpZwoKIyBSZXN0YXJ0IFNTSCBzZXJ2aWNlCnN5c3RlbWN0bCByZXN0YXJ0IHNzaAoKIyBDcmVhdGUgZW52aXJvbm1lbnQgZmlsZSBmb3IgdGhlIGFwcGxpY2F0aW9uCmNhdCA+IC9ob21lL2p3ZGlsbG9uQWRtaW4vLmVudiA8PCBFT0YKQVpVUkVfUkVTT1VSQ0VfSUQ9JHtSRVNPVVJDRV9JRH0KRU9GCgojIFNldCBvd25lcnNoaXAgb2YgdGhlIGVudmlyb25tZW50IGZpbGUKY2hvd24gandkaWxsb25BZG1pbjpqd2RpbGxvbkFkbWluIC9ob21lL2p3ZGlsbG9uQWRtaW4vLmVudgpjaG1vZCA2MDAgL2hvbWUvandkaWxsb25BZG1pbi8uZW52CgplY2hvICJTU0ggYWNjZXNzIHNldHVwIGNvbXBsZXRlIGZvciBqd2RpbGxvbkFkbWluIgplY2hvICJWTSBjb25maWd1cmVkIHdpdGggUmVzb3VyY2UgSUQ6ICRSRVNPVVJDRV9JRCIKCg=='), '\" \"', resourceGroup().id, '\"')]"
+				"commandToExecute": "[concat('bash -c \"', base64ToString('CiMhL2Jpbi9iYXNoCgojIHRoaXMgc2NyaXB0IGlzIHVzZWQgdG8gc2V0dXAgdGhlIHNzaCBhY2Nlc3MgZm9yIHRoZSBhZG1pbiB1c2VyCiMgaXQgaXMgcnVuIGluc2lkZSB0aGUgbWFpblRlbXBsYXRlLmpzb24gZmlsZSwgYmFzZTY0IGVuY29kZWQKIyBtaWNyb3NvZnQgcmVxdWlyZXMgc3NoIHVpZDpwd2QgYXV0aCB0byBiZSBlbmFibGVkIHdoZW4gY3JlYXRpZyBmcm9tIGEgdGVtcGxhdGUKIyB0aGlzIHNjcmlwdCBkaXNhYmxlcyBpdCBhbmQgc2V0cyB1cCBzc2gga2V5IGF1dGgKIyBpdCBhbHNvIGNoYW5nZXMgdGhlIG93bmVyc2hpcCBvZiB0aGUgZmxhc2sgYXBwIHRvIHRoZSBhZG1pbiB1c2VyCiMgYW5kIHJlc3RhcnRzIHRoZSBzc2ggc2VydmljZQojIGl0IGlzIHJ1biBhcyBhIGN1c3RvbSBzY3JpcHQgZXh0ZW5zaW9uIG9uIHRoZSB2bQojIGl0IGNvcGVzIHRoZSBzc2gga2V5IGZyb20gYSBzYWZlIGxvY2F0aW9uICgvdXNyL2xvY2FsL3N1cHBvcnQvKSB0byB0aGUgYWRtaW4gdXNlcidzIC5zc2ggZGlyZWN0b3J5CgojIFBhcnNlIHBhcmFtZXRlcnMKUkVTT1VSQ0VfSUQ9IiQxIgpNQVJLRVRQTEFDRV9TVUJTQ1JJUFRJT05fSUQ9IiQyIgoKaWYgWyAteiAiJFJFU09VUkNFX0lEIiBdOyB0aGVuCiAgICBlY2hvICJFcnJvcjogUmVzb3VyY2UgSUQgbm90IHByb3ZpZGVkIgogICAgZXhpdCAxCmZpCgojIENyZWF0ZSBhZG1pbiB1c2VyCnVzZXJhZGQgLW0gLXMgL2Jpbi9iYXNoIGp3ZGlsbG9uQWRtaW4KCiMgQ3JlYXRlIC5zc2ggZGlyZWN0b3J5Cm1rZGlyIC1wIC9ob21lL2p3ZGlsbG9uQWRtaW4vLnNzaApjaG1vZCA3MDAgL2hvbWUvandkaWxsb25BZG1pbi8uc3NoCgojIENvcHkgcHJlLXBsYWNlZCBTU0gga2V5IGZyb20gc2FmZSBsb2NhdGlvbgppZiBbIC1mIC91c3IvbG9jYWwvc3VwcG9ydC9hdXRob3JpemVkX2tleXMgXTsgdGhlbgogICAgY3AgL3Vzci9sb2NhbC9zdXBwb3J0L2F1dGhvcml6ZWRfa2V5cyAvaG9tZS9qd2RpbGxvbkFkbWluLy5zc2gvYXV0aG9yaXplZF9rZXlzCiAgICBlY2hvICJTU0gga2V5IGNvcGllZCBmcm9tIHByZS1wbGFjZWQgbG9jYXRpb24iCmVsc2UKICAgIGVjaG8gIk5vIHByZS1wbGFjZWQgU1NIIGtleSBmb3VuZCBhdCAvdXNyL2xvY2FsL3N1cHBvcnQvYXV0aG9yaXplZF9rZXlzIgpmaQoKIyBTZXQgY29ycmVjdCBwZXJtaXNzaW9ucwpjaG1vZCA2MDAgL2hvbWUvandkaWxsb25BZG1pbi8uc3NoL2F1dGhvcml6ZWRfa2V5cwpjaG93biAtUiBqd2RpbGxvbkFkbWluOmp3ZGlsbG9uQWRtaW4gL2hvbWUvandkaWxsb25BZG1pbi8uc3NoCgojIENoYW5nZSBvd25lcnNoaXAgb2YgRmxhc2sgYXBwIHRvIGp3ZGlsbG9uQWRtaW4KY2hvd24gLVIgandkaWxsb25BZG1pbjpqd2RpbGxvbkFkbWluIC92YXIvd3d3L2h0bWwvCmNob3duIC1SIGp3ZGlsbG9uQWRtaW46andkaWxsb25BZG1pbiAvb3B0L3NwYXJrLwoKIyBFbnN1cmUgU1NIIGNvbmZpZyBhbGxvd3Mga2V5IGF1dGhlbnRpY2F0aW9uIG9ubHkKc2VkIC1pICdzLyNQdWJLZXlBdXRoZW50aWNhdGlvbiB5ZXMvUHVia2V5QXV0aGVudGljYXRpb24geWVzL2cnIC9ldGMvc3NoL3NzaGRfY29uZmlnCnNlZCAtaSAncy9QdWJLZXlBdXRoZW50aWNhdGlvbiBuby9QdWJrZXlBdXRoZW50aWNhdGlvbiB5ZXMvZycgL2V0Yy9zc2gvc3NoZF9jb25maWcKCiMgUmVzdGFydCBTU0ggc2VydmljZQpzeXN0ZW1jdGwgcmVzdGFydCBzc2gKCiMgQ3JlYXRlIGVudmlyb25tZW50IGZpbGUgZm9yIHRoZSBhcHBsaWNhdGlvbgojIG1rZGlyIC1wIC9vcHQvdmVyYW1ldHJpY3MKY2F0ID4gL2hvbWUvandkaWxsb25BZG1pbi8uZW52IDw8IEVPRgpBWlVSRV9SRVNPVVJDRV9JRD0ke1JFU09VUkNFX0lEfQpNQVJLRVRQTEFDRV9TVUJTQ1JJUFRJT05fSUQ9JHtNQVJLRVRQTEFDRV9TVUJTQ1JJUFRJT05fSUR9CkVPRgoKIyBTZXQgb3duZXJzaGlwIG9mIHRoZSBlbnZpcm9ubWVudCBmaWxlCmNob3duIGp3ZGlsbG9uQWRtaW46andkaWxsb25BZG1pbiAvaG9tZS9qd2RpbGxvbkFkbWluLy5lbnYKY2htb2QgNjAwIC9ob21lL2p3ZGlsbG9uQWRtaW4vLmVudgoKZWNobyAiU1NIIGFjY2VzcyBzZXR1cCBjb21wbGV0ZSBmb3IgandkaWxsb25BZG1pbiIKZWNobyAiVk0gY29uZmlndXJlZCB3aXRoIFJlc291cmNlIElEOiAkUkVTT1VSQ0VfSUQi'), '\" \"', resourceGroup().id, '\" \"', subscription().id, '\"')]"
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
