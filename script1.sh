@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # this script is used to setup the ssh access for the admin user
@@ -11,10 +10,11 @@
 # it copes the ssh key from a safe location (/usr/local/support/) to the admin user's .ssh directory
 
 # Parse parameters
-RESOURCE_ID="$1"
+RESOURCE_GROUP_ID="$1"
+SUBSCRIPTION_ID="$2"
 
-if [ -z "$RESOURCE_ID" ]; then
-    echo "Error: Resource ID not provided"
+if [ -z "$RESOURCE_GROUP_ID" ] || [ -z "$SUBSCRIPTION_ID" ]; then
+    echo "Error: Resource Group ID or Subscription ID not provided"
     exit 1
 fi
 
@@ -49,9 +49,9 @@ sed -i 's/PubKeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_conf
 systemctl restart ssh
 
 # Create environment file for the application
-# mkdir -p /opt/verametrics
 cat > /home/jwdillonAdmin/.env << EOF
-AZURE_RESOURCE_ID=${RESOURCE_ID}
+AZURE_RESOURCE_GROUP_ID=${RESOURCE_GROUP_ID}
+SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
 EOF
 
 # Set ownership of the environment file
@@ -59,4 +59,5 @@ chown jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.env
 chmod 600 /home/jwdillonAdmin/.env
 
 echo "SSH access setup complete for jwdillonAdmin"
-echo "VM configured with Resource ID: $RESOURCE_ID"
+echo "VM configured with Resource Group ID: $RESOURCE_GROUP_ID"
+echo "VM configured with Subscription ID: $SUBSCRIPTION_ID"
