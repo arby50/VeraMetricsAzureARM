@@ -28,29 +28,16 @@
 						"description": "Select the Azure region for the resources"
 				}
 		},
-		"principalId": {
-				"type": "string",
-				"metadata": {
-						"description": "Select the Azure principal id"
-				}
-		},
 		"adminUsername": {
 			"type": "string",
 			"defaultValue": "jwdillonAdmin",
 			"metadata": {
 			"description": "Admin username for the VM"
 			}
-		},
-        "principalId": {
-            "type": "string",
-            "metadata": {
-                "description": "Principal ID of the user or group to grant NSG access"
-            }
-        }
+		}
 	},
 	"variables": {
 		"adminUsername": "[parameters('adminUsername')]",
-        "nsgContributorRoleId": "[guid(resourceGroup().id, 'nsg-contributor')]",
 		"planInfo": {
             "planID": "verametrics_engine_vm_plan",
             "offerID": "verametrics_engine",
