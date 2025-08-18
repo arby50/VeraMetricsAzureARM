@@ -1,0 +1,38 @@
+
+{
+  "authorizations": [
+    {
+      "principalId": "[parameters('principalId')]",
+      "roleDefinitionId": "[variables('nsgContributorRoleId')]"
+    }
+  ],
+  "lockLevel": "CanNotDelete",
+  "customRoleDefinitions": [
+    {
+      "name": "NSG Security Rules Contributor",
+      "id": "[variables('nsgContributorRoleId')]",
+      "type": "CustomRole",
+      "properties": {
+        "roleName": "NSG Security Rules Contributor",
+        "description": "Can manage security rules on Network Security Groups only",
+        "type": "CustomRole",
+        "permissions": [
+          {
+            "actions": [
+              "Microsoft.Network/networkSecurityGroups/securityRules/read",
+              "Microsoft.Network/networkSecurityGroups/securityRules/write",
+              "Microsoft.Network/networkSecurityGroups/securityRules/delete",
+              "Microsoft.Network/networkSecurityGroups/read"
+            ],
+            "notActions": [],
+            "dataActions": [],
+            "notDataActions": []
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    }
+  ]
+}
