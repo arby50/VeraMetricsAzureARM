@@ -7,6 +7,9 @@
 		},
 		"vmSize": {
 			"value": "Standard_B4ms"
+		},
+		"principalId": {
+			"value": "fb2636ce-1e10-4ba2-869f-5ae3e7c1f559"
 		}
 	}
 }
