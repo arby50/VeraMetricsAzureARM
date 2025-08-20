@@ -200,13 +200,47 @@
 			"location": "[parameters('location')]"
 		},
 		{
-			"type": "Microsoft.Authorization/roleAssignments",
-			"apiVersion": "2022-04-01",
-			"name": "[guid(resourceGroup().id, variables('nsgIdentityName'), 'network-contributor')]",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2022-09-01",
+			"name": "nsgRoleAssignmentDeployment",
+			"resourceGroup": "[resourceGroup().name]",
 			"properties": {
-				"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",  // Network Contributor
-				"principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName')), '2023-01-31').principalId]",
-				"scope": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+				"mode": "Incremental",
+			    "expressionEvaluationOptions": {
+					"scope": "inner"
+				},	
+				"parameters": {
+					"nsgResourceId": {
+						"value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+					},
+					"principalId": {
+						"value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName')), '2023-01-31').principalId]"
+					}
+				},
+				"template": {
+					"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+					"contentVersion": "1.0.0.0",
+					"parameters": {
+						"nsgResourceId": {
+							"type": "string"
+						},
+						"principalId": {
+							"type": "string"
+						}
+					},
+					"resources": [
+						{
+							"type": "Microsoft.Authorization/roleAssignments",
+							"apiVersion": "2022-04-01",
+							"name": "[guid(parameters('nsgResourceId'), parameters('principalId'), '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+							"properties": {
+								"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+								"principalId": "[parameters('principalId')]",
+								"scope": "[parameters('nsgResourceId')]"
+							}
+						}
+					]
+				}
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName'))]",
