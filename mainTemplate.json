@@ -232,11 +232,11 @@
 						{
 							"type": "Microsoft.Authorization/roleAssignments",
 							"apiVersion": "2022-04-01",
+							"scope": "[parameters('nsgResourceId')]",
 							"name": "[guid(parameters('nsgResourceId'), parameters('principalId'), '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
 							"properties": {
 								"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
-								"principalId": "[parameters('principalId')]",
-								"scope": "[parameters('nsgResourceId')]"
+								"principalId": "[parameters('principalId')]"
 							}
 						}
 					]
