@@ -53,7 +53,7 @@
 		"addressPrefix": "10.1.0.0/16",
 		"securityType": "Standard",
 		"osDiskType": "Standard_LRS",
-		"nsgIdentityName": "nsgManagedIdentity",
+		"nsgIdentityName": "nsgManagedIdentity",	//TODO: does this need to be named specifically, based on instanceName?
 		"securityProfileJson": {
 			"uefiSettings": {
 				"secureBootEnabled": true,
@@ -202,19 +202,23 @@
 		{
 			"type": "Microsoft.Authorization/roleAssignments",
 			"apiVersion": "2022-04-01",
-			"name": "[guid(resourceGroup().id, 'nsg-role')]",
+			"name": "[guid(resourceGroup().id, variables('nsgIdentityName'), 'network-contributor')]",
 			"properties": {
-				"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]", // Network Contributor
+				"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",  // Network Contributor
 				"principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName')), '2023-01-31').principalId]",
-				//"scope": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
-				"scope": "[resourceGroup().id]"
-			}
+				"scope": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName'))]",
+				"[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+			]
 		},
 		{
 			"type": "Microsoft.Compute/virtualMachines",
 			"apiVersion": "2023-09-01",
 			"name": "[variables('vmName')]",
 			"location": "[parameters('location')]",
+			
 			"plan": {
                 "name": "[variables('planInfo').planID]",
                 "product": "[variables('planInfo').offerID]",
