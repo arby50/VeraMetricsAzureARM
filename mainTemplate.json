@@ -219,11 +219,11 @@
 			"apiVersion": "2023-09-01",
 			"name": "[variables('vmName')]",
 			"location": "[parameters('location')]",
-			"plan": {
-                "name": "[variables('planInfo').planID]",
-                "product": "[variables('planInfo').offerID]",
-                "publisher": "[variables('planInfo').publisher]"
-            },
+			// "plan": {
+            //     "name": "[variables('planInfo').planID]",
+            //     "product": "[variables('planInfo').offerID]",
+            //     "publisher": "[variables('planInfo').publisher]"
+            // },
 			"identity": {
 				"type": "UserAssigned",
 				"userAssignedIdentities": {
@@ -236,10 +236,7 @@
 				},
                 "storageProfile": {
                     "imageReference": {
-                        "offer": "[variables('planInfo').offerID]",
-                        "publisher": "[variables('planInfo').publisher]",
-                        "sku": "[variables('planInfo').planID]",
-                        "version": "latest"
+                        "id": "[resourceId('JWDILLONVERAMETRICSRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngine', '1.0.7')]"
                     },
                     "osdisk": {
                         "name": "[concat(variables('vmName'), '-osDisk')]",
