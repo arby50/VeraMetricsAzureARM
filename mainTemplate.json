@@ -206,9 +206,13 @@
 			"properties": {
 				"roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]", // Network Contributor
 				"principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName')), '2023-01-31').principalId]",
+				"principalType": "ServicePrincipal",
 				//"scope": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
 				"scope": "[resourceGroup().id]"
-			}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('nsgIdentityName'))]"
+			]
 		},
 		{
 			"type": "Microsoft.Compute/virtualMachines",
