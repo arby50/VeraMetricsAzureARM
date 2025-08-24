@@ -61,7 +61,9 @@ sed -i 's/PubKeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_conf
 systemctl restart ssh
 
 # Create environment file for the application
-cat > /home/jwdillonAdmin/.env << EOF
+# cant create in jwdillonAdmin folder, perm problem, no idea why we can create a folder via mkdir but not a file
+#cat > /home/jwdillonAdmin/.env << EOF
+cat > /tmp/.env << EOF
 AZURE_RESOURCE_GROUP_ID=${RESOURCE_GROUP_ID}
 SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
 EOF
