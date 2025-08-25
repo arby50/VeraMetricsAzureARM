@@ -67,10 +67,11 @@ cat > /tmp/.env << EOF
 AZURE_RESOURCE_GROUP_ID=${RESOURCE_GROUP_ID}
 SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
 EOF
+cp /tmp/.env /home/jwdillonAdmin/.env/
 
 # Set ownership of the environment file
-chown jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.env
 chmod 600 /home/jwdillonAdmin/.env
+chown -R jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.env
 
 echo "SSH access setup complete for jwdillonAdmin"
 echo "VM configured with Resource Group ID: $RESOURCE_GROUP_ID"

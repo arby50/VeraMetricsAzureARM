@@ -3,7 +3,7 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"vmInstanceName": {
-			"value": "myTestApp20250823a"
+			"value": "myTestApp20250825i"
 		},
 		"vmSize": {
 			"value": "Standard_B4ms"
