@@ -17,9 +17,6 @@ set TIMESTAMP=%datetime:~0,8%-%datetime:~8,6%
 
 echo Creating snapshot for VM: %VM_NAME%
 
-REM Login to Azure (will prompt for authentication)
-az login
-
 REM Get the resource group and OS disk from the VM
 echo Getting VM information...
 for /f %%i in ('az vm list --query "[?name=='%VM_NAME%'].resourceGroup" -o tsv') do set RESOURCE_GROUP=%%i
