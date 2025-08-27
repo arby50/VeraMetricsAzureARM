@@ -68,7 +68,7 @@ echo ✅ Snapshot created successfully: %SNAPSHOT_NAME%
 
 REM Create disk from snapshot
 set DISK_NAME=%VM_NAME%-snapshot-disk-%TIMESTAMP%
-echo Creating disk from snapshot: %DISK_NAME%
+echo Creating disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% 
 
 az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS
 
