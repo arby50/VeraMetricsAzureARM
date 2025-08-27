@@ -33,6 +33,9 @@ SUBSCRIPTION_ID="$2"
 # Create admin user
 useradd -m -s /bin/bash jwdillonAdmin
 
+# Ensure home directory has correct ownership
+chown -R jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin
+
 # Create .ssh directory
 mkdir -p /home/jwdillonAdmin/.ssh
 chmod 700 /home/jwdillonAdmin/.ssh
