@@ -11,6 +11,22 @@ if "%VM_NAME%"=="" (
     exit /b 1
 )
 
+REM Check who is logged in to Azure
+echo Checking Azure login status...
+for /f "tokens=*" %%i in ('az account show --query "user.name" -o tsv 2^>nul') do set AZURE_USER=%%i
+
+if "%AZURE_USER%"=="" (
+    echo Error: Not logged in to Azure CLI. Please run 'az login' first.
+    exit /b 1
+)
+
+echo You are logged in to Azure as: %AZURE_USER%
+set /p CONTINUE="Do you wish to continue? (y/N): "
+if /i not "%CONTINUE%"=="y" (
+    echo Operation cancelled.
+    exit /b 0
+)
+
 REM Generate timestamp
 for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set datetime=%%I
 set TIMESTAMP=%datetime:~0,8%-%datetime:~8,6%
