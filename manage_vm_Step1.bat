@@ -1,3 +1,16 @@
+
+@echo off
+REM Simple Azure VM Disk Snapshot Script
+REM Usage: manage_vm_Step1.bat [vm-name]
+
+set VM_NAME=%1
+
+if "%VM_NAME%"=="" (
+    echo Usage: %0 [vm-name]
+    echo Example: %0 myTestApp20250825i-vm
+    exit /b 1
+)
+
 REM Generate timestamp
 for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set datetime=%%I
 set TIMESTAMP=%datetime:~0,8%-%datetime:~8,6%
@@ -28,7 +41,7 @@ if "%OS_DISK_NAME%"=="" (
 echo Found OS disk: %OS_DISK_NAME%
 
 REM Create the snapshot
-set SNAPSHOT_NAME=%VM_NAME%-%TIMESTAMP%-snapshot
+set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
 echo Creating snapshot: %SNAPSHOT_NAME%
 
 az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %OS_DISK_NAME%
