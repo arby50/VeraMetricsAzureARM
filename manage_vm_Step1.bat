@@ -28,7 +28,7 @@ if "%OS_DISK_NAME%"=="" (
 echo Found OS disk: %OS_DISK_NAME%
 
 REM Create the snapshot
-set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
+set SNAPSHOT_NAME=%VM_NAME%-%TIMESTAMP%-snapshot
 echo Creating snapshot: %SNAPSHOT_NAME%
 
 az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %OS_DISK_NAME%
