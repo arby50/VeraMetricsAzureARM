@@ -72,7 +72,7 @@ if "%DISK_RESOURCE_ID%"=="" (
     echo Error: Could not find disk resource ID for %OS_DISK_NAME%
     exit /b 1
 )
-
+--output none
 echo Found disk resource ID: %DISK_RESOURCE_ID%
 
 REM Create the snapshot
