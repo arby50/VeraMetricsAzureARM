@@ -72,14 +72,14 @@ if "%DISK_RESOURCE_ID%"=="" (
     echo Error: Could not find disk resource ID for %OS_DISK_NAME%
     exit /b 1
 )
---output none
+
 echo Found disk resource ID: %DISK_RESOURCE_ID%
 
 REM Create the snapshot
 set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
 echo Creating snapshot: %SNAPSHOT_NAME%
 
-az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID%
+az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID% --output none
 
 if %errorlevel% neq 0 (
     echo ❌ Failed to create snapshot
@@ -92,7 +92,7 @@ REM Create disk from snapshot
 set DISK_NAME=%VM_NAME%-snapshot-disk-%TIMESTAMP%
 echo Creating disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% 
 
-az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS
+az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS --output none
 
 if %errorlevel% equ 0 (
     echo ✅ Disk created successfully: %DISK_NAME%
