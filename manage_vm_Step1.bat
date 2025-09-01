@@ -107,3 +107,27 @@ if %errorlevel% equ 0 (
 )
 
 echo Created disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% successfully
+
+REM Create VM from the disk
+set NEW_VM_NAME=%VM_NAME%-from-snapshot-%TIMESTAMP%
+echo Creating new VM: %NEW_VM_NAME%
+
+CALL az vm create --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --attach-os-disk %DISK_NAME% --os-type Linux --output none
+
+if %errorlevel% equ 0 (
+    echo VM created successfully: %NEW_VM_NAME%
+    echo You can now connect to your new VM
+    
+    REM Get the public IP of the new VM
+    for /f %%i in ('az vm show --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --show-details --query "publicIps" -o tsv') do set NEW_VM_IP=%%i
+    
+    if not "%NEW_VM_IP%"=="" (
+        echo New VM Public IP: %NEW_VM_IP%
+        echo Connect with: ssh jwdillonAdmin@%NEW_VM_IP%
+    )
+) else (
+    echo Failed to create VM from disk
+    exit /b 1
+)
+
+echo VM creation process completed successfully!
