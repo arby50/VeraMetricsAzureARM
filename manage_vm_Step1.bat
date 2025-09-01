@@ -53,9 +53,20 @@ if "%OS_DISK_NAME%"=="" (
 
 echo Found OS disk: %OS_DISK_NAME%
 
+REM Get the disk resource group (may be different from VM resource group)
+echo Finding disk resource group...
+for /f %%i in ('az disk list --query "[?name=='%OS_DISK_NAME%'].resourceGroup" -o tsv') do set DISK_RESOURCE_GROUP=%%i
+
+if "%DISK_RESOURCE_GROUP%"=="" (
+    echo Error: Could not find resource group for disk %OS_DISK_NAME%
+    exit /b 1
+)
+
+echo Found disk in resource group: %DISK_RESOURCE_GROUP%
+
 REM Get the full disk resource ID
 echo Getting disk resource ID...
-for /f %%i in ('az disk show --resource-group %RESOURCE_GROUP% --name %OS_DISK_NAME% --query "id" -o tsv') do set DISK_RESOURCE_ID=%%i
+for /f %%i in ('az disk show --resource-group %DISK_RESOURCE_GROUP% --name %OS_DISK_NAME% --query "id" -o tsv') do set DISK_RESOURCE_ID=%%i
 
 if "%DISK_RESOURCE_ID%"=="" (
     echo Error: Could not find disk resource ID for %OS_DISK_NAME%

@@ -1,0 +1,47 @@
+C:\Users\arby5\Dropbox\Ryan1\JWD\Clients\ECC\Azure marketplace\VeraMetricsAzureARM>manage_vm_Step1.bat verametrics-20250901-vm
+Checking Azure login status...
+You are logged in to Azure as: ryan.brown@jwdillon.com
+Do you wish to continue? (y/N): y
+Creating snapshot for VM: verametrics-20250901-vm
+Getting VM information...
+Found VM in resource group: VERAMETRICS-20250901-VM_GROUP
+Found OS disk: verametrics-20250901-snapshot-disk
+Finding disk resource group...
+Found disk in resource group: JWDILLONVERAMETRICSRG
+Getting disk resource ID...
+Found disk resource ID: /subscriptions/bbf69038-06ce-4679-9124-59acaab086d8/resourceGroups/JWDILLONVERAMETRICSRG/providers/Microsoft.Compute/disks/verametrics-20250901-snapshot-disk
+Creating snapshot: verametrics-20250901-vm-snapshot-20250901-100855
+{
+  "creationData": {
+    "createOption": "Copy",
+    "sourceResourceId": "/subscriptions/bbf69038-06ce-4679-9124-59acaab086d8/resourceGroups/JWDILLONVERAMETRICSRG/providers/Microsoft.Compute/disks/verametrics-20250901-snapshot-disk",
+    "sourceUniqueId": "33907387-2bc7-42f7-8620-3af75abad942"
+  },
+  "dataAccessAuthMode": "None",
+  "diskSizeBytes": 32213303296,
+  "diskSizeGB": 30,
+  "diskState": "Unattached",
+  "encryption": {
+    "type": "EncryptionAtRestWithPlatformKey"
+  },
+  "hyperVGeneration": "V2",
+  "id": "/subscriptions/bbf69038-06ce-4679-9124-59acaab086d8/resourceGroups/VERAMETRICS-20250901-VM_GROUP/providers/Microsoft.Compute/snapshots/verametrics-20250901-vm-snapshot-20250901-100855",
+  "incremental": false,
+  "location": "eastus",
+  "name": "verametrics-20250901-vm-snapshot-20250901-100855",
+  "networkAccessPolicy": "AllowAll",
+  "osType": "Linux",
+  "provisioningState": "Succeeded",
+  "publicNetworkAccess": "Enabled",
+  "resourceGroup": "VERAMETRICS-20250901-VM_GROUP",
+  "sku": {
+    "name": "Standard_LRS",
+    "tier": "Standard"
+  },
+  "tags": {},
+  "timeCreated": "2025-09-01T14:09:56.8560433+00:00",
+  "type": "Microsoft.Compute/snapshots",
+  "uniqueId": "ea3630b2-3fff-4c29-87cf-eb5b9a9d3f0f"
+}
+
+C:\Users\arby5\Dropbox\Ryan1\JWD\Clients\ECC\Azure marketplace\VeraMetricsAzureARM>
