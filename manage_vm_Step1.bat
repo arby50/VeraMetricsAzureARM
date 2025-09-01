@@ -79,25 +79,31 @@ REM Create the snapshot
 set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
 echo Creating snapshot: %SNAPSHOT_NAME%
 
-az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID% --output none
+CALL az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID% --output none
+REM az snapshot wait
 
 if %errorlevel% neq 0 (
-    echo ❌ Failed to create snapshot
+    echo Failed to create snapshot!!!!!
     exit /b 1
+) else (
+    echo  created snapshot
 )
 
-echo ✅ Snapshot created successfully: %SNAPSHOT_NAME%
+echo Snapshot created successfully: %SNAPSHOT_NAME%
 
 REM Create disk from snapshot
 set DISK_NAME=%VM_NAME%-snapshot-disk-%TIMESTAMP%
 echo Creating disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% 
 
-az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS --output none
+CALL az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS --output none
+REM az snapshot wait
 
 if %errorlevel% equ 0 (
-    echo ✅ Disk created successfully: %DISK_NAME%
+    echo Disk created successfully: %DISK_NAME%
     echo You can now use this disk to create a new VM
 ) else (
-    echo ❌ Failed to create disk from snapshot
+    echo Failed to create disk from snapshot
     exit /b 1
 )
+
+echo Created disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% successfully
