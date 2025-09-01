@@ -53,11 +53,22 @@ if "%OS_DISK_NAME%"=="" (
 
 echo Found OS disk: %OS_DISK_NAME%
 
+REM Get the full disk resource ID
+echo Getting disk resource ID...
+for /f %%i in ('az disk show --resource-group %RESOURCE_GROUP% --name %OS_DISK_NAME% --query "id" -o tsv') do set DISK_RESOURCE_ID=%%i
+
+if "%DISK_RESOURCE_ID%"=="" (
+    echo Error: Could not find disk resource ID for %OS_DISK_NAME%
+    exit /b 1
+)
+
+echo Found disk resource ID: %DISK_RESOURCE_ID%
+
 REM Create the snapshot
 set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
 echo Creating snapshot: %SNAPSHOT_NAME%
 
-az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %OS_DISK_NAME%
+az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID%
 
 if %errorlevel% neq 0 (
     echo ❌ Failed to create snapshot
