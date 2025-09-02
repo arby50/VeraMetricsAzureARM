@@ -112,7 +112,7 @@ REM Create VM from the disk
 set NEW_VM_NAME=%VM_NAME%-from-snapshot-%TIMESTAMP%
 echo Creating new VM: %NEW_VM_NAME%
 
-CALL az vm create --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --attach-os-disk %DISK_NAME% --os-type Linux --output none
+CALL az vm create --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --attach-os-disk %DISK_NAME% --os-type Linux --os-disk-delete-option Delete --nic-delete-option Delete --output none
 
 if %errorlevel% equ 0 (
     echo VM created successfully: %NEW_VM_NAME%
