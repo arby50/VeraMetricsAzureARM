@@ -1,4 +1,3 @@
-
 @echo off
 REM Simple Azure VM Disk Snapshot Script
 REM     -creates new ResourceGroup
@@ -143,8 +142,10 @@ if %errorlevel% equ 0 (
 echo Please manually remove the .ssh folder else VM marketplace verification fails->sudo rm -rf /home/jwdillonAdmin
 echo then remove the user->sudo waagent -deprovision+user -force
 set /p CONTINUE2="Do you complete those steps? (y/N): "
-while /i not "%CONTINUE2%"=="y" (
+:loop
+if /i not "%CONTINUE2%"=="y" (
     set /p CONTINUE2="Do you complete those steps? (y/N): "
+    goto loop
 )
 
 echo VM creation process completed successfully!
