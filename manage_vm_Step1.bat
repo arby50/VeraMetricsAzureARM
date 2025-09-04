@@ -1,6 +1,10 @@
 
 @echo off
 REM Simple Azure VM Disk Snapshot Script
+REM     -creates new ResourceGroup
+REM     -creates a snapshot of the VM
+REM     -creates a new disk from the snapshot
+REM     -creates a new VM from the new disk
 REM Usage: manage_vm_Step1.bat [vm-name]
 
 set VM_NAME=%1
@@ -75,11 +79,16 @@ if "%DISK_RESOURCE_ID%"=="" (
 
 echo Found disk resource ID: %DISK_RESOURCE_ID%
 
+REM create a resourceGroup to hold everything
+set NEW_RESOURCE_GROUP_NAME=%VM_NAME%-rg-%TIMESTAMP%
+echo Creating resource group: %NEW_RESOURCE_GROUP_NAME%
+CALL az group create --name %NEW_RESOURCE_GROUP_NAME% --location eastus --output none
+
 REM Create the snapshot
 set SNAPSHOT_NAME=%VM_NAME%-snapshot-%TIMESTAMP%
 echo Creating snapshot: %SNAPSHOT_NAME%
 
-CALL az snapshot create --resource-group %RESOURCE_GROUP% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID% --output none
+CALL az snapshot create --resource-group %NEW_RESOURCE_GROUP_NAME% --name %SNAPSHOT_NAME% --source %DISK_RESOURCE_ID% --output none
 REM az snapshot wait
 
 if %errorlevel% neq 0 (
@@ -95,7 +104,7 @@ REM Create disk from snapshot
 set DISK_NAME=%VM_NAME%-snapshot-disk-%TIMESTAMP%
 echo Creating disk %DISK_NAME% from snapshot: %SNAPSHOT_NAME% 
 
-CALL az disk create --resource-group %RESOURCE_GROUP% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS --output none
+CALL az disk create --resource-group %NEW_RESOURCE_GROUP_NAME% --name %DISK_NAME% --source %SNAPSHOT_NAME% --sku Standard_LRS --output none
 REM az snapshot wait
 
 if %errorlevel% equ 0 (
@@ -112,18 +121,19 @@ REM Create VM from the disk
 set NEW_VM_NAME=%VM_NAME%-from-snapshot-%TIMESTAMP%
 echo Creating new VM: %NEW_VM_NAME%
 
-CALL az vm create --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --attach-os-disk %DISK_NAME% --os-type Linux --os-disk-delete-option Delete --nic-delete-option Delete --output none
+CALL az vm create --resource-group %NEW_RESOURCE_GROUP_NAME% --name %NEW_VM_NAME% --attach-os-disk %DISK_NAME% --size Standard_B2s --os-type Linux --os-disk-delete-option Delete --nic-delete-option Delete --output none
 
 if %errorlevel% equ 0 (
     echo VM created successfully: %NEW_VM_NAME%
     echo You can now connect to your new VM
-    
+
     REM Get the public IP of the new VM
-    for /f %%i in ('az vm show --resource-group %RESOURCE_GROUP% --name %NEW_VM_NAME% --show-details --query "publicIps" -o tsv') do set NEW_VM_IP=%%i
-    
+    for /f %%i in ('az vm show --resource-group %NEW_RESOURCE_GROUP_NAME% --name %NEW_VM_NAME% --show-details --query "publicIps" -o tsv') do set NEW_VM_IP=%%i
+
     if not "%NEW_VM_IP%"=="" (
         echo New VM Public IP: %NEW_VM_IP%
-        echo Connect with: ssh jwdillonAdmin@%NEW_VM_IP%
+        echo Connect with: C:\Windows\System32\OpenSSH\ssh.exe -i c:\Users\arby5\.ssh\CQL-test1_key.pem azureuser@172.190.115.44
+        echo Connect with: https://%NEW_VM_IP%
     )
 ) else (
     echo Failed to create VM from disk
