@@ -148,4 +148,28 @@ if /i not "%CONTINUE2%"=="y" (
     goto loop
 )
 
+echo Manual steps completed. Now deallocating and generalizing the VM...
+
+REM Step 8: Deallocate the VM
+echo Deallocating VM: %NEW_VM_NAME%
+CALL az vm deallocate --resource-group %NEW_RESOURCE_GROUP_NAME% --name %NEW_VM_NAME% --output none
+
+if %errorlevel% equ 0 (
+    echo VM deallocated successfully
+) else (
+    echo Failed to deallocate VM
+    exit /b 1
+)
+
+REM Step 9: Generalize the VM
+echo Generalizing VM: %NEW_VM_NAME%
+CALL az vm generalize --resource-group %NEW_RESOURCE_GROUP_NAME% --name %NEW_VM_NAME% --output none
+
+if %errorlevel% equ 0 (
+    echo VM generalized successfully
+) else (
+    echo Failed to generalize VM
+    exit /b 1
+)
+
 echo VM creation process completed successfully!
