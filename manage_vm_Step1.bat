@@ -222,14 +222,14 @@ CALL az sig show --resource-group JWDillonVeraMetricsRG --gallery-name JWDillonV
 if %errorlevel% equ 0 (
     set GALLERY_RESOURCE_GROUP=JWDillonVeraMetricsRG
     set GALLERY_NAME=JWDillonVeraMetricsProdGallery
-    echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
+    echo Found gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
 ) else (
     REM Check second location: JWDillonProdGallery in JWDillonAppImagesRG (for ryan__brown@hotmail.com)
     CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery --query "name" -o tsv >nul 2>&1
     if %errorlevel% leq 3 (
         set GALLERY_RESOURCE_GROUP=JWDillonAppImagesRG
         set GALLERY_NAME=JWDillonProdGallery
-        echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
+        echo Found gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
     ) else (
         echo Error: Could not find Azure Image Gallery in either location
         echo Checked: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG
