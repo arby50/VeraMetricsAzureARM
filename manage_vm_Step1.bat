@@ -197,7 +197,7 @@ if %errorlevel% equ 0 (
     exit /b 1
 )
 
-REM Step 10: Find the Azure Image Gallery
+REM Find the Azure Image Gallery
 echo Finding Azure Image Gallery...
 
 REM Check first location: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG (for ryan.brown@jwdillon.com)
@@ -221,7 +221,7 @@ if %errorlevel% equ 0 (
     )
 )
 
-REM Step 11: Get latest version and increment
+REM Get latest version and increment
 echo Getting latest version from gallery image definition: VeraMetricsEngine
 for /f %%i in ('az sig image-version list --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --query "max([].name)" -o tsv') do set LATEST_VERSION=%%i
 
