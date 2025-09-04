@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 REM Simple Azure VM Disk Snapshot Script
 REM     -creates new ResourceGroup
 REM     -creates a snapshot of the VM
@@ -25,6 +26,14 @@ if "%AZURE_USER%"=="" (
 
 echo You are logged in to Azure as: %AZURE_USER%
 
+REM Ask for confirmation before proceeding
+echo.
+set /p CONTINUE_LOGIN="Do you wish to continue with this user? (y/N): "
+if /i not "%CONTINUE_LOGIN%"=="y" (
+    echo Please run 'az login' to switch users, then run this script again.
+    exit /b 0
+)
+
 REM List available subscriptions and let user select
 echo.
 echo Available subscriptions:
@@ -32,6 +41,12 @@ echo Available subscriptions:
 REM Create temporary file to store subscription data
 set TEMP_SUBS=%TEMP%\azure_subs_%RANDOM%.txt
 az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output tsv > %TEMP_SUBS%
+
+REM Check if we got any subscriptions
+if not exist %TEMP_SUBS% (
+    echo Error: Could not retrieve subscription list
+    exit /b 1
+)
 
 REM Display numbered list
 set SUB_COUNT=0
@@ -41,8 +56,14 @@ for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
     echo !SUB_COUNT!. %%a [%%b] - %%c
 )
 
+if !SUB_COUNT! EQU 0 (
+    echo Error: No subscriptions found
+    del %TEMP_SUBS%
+    exit /b 1
+)
+
 echo.
-set /p SUB_CHOICE="Please select subscription number (1-%SUB_COUNT%): "
+set /p SUB_CHOICE="Please select subscription number (1-!SUB_COUNT!): "
 
 REM Validate input
 if "%SUB_CHOICE%"=="" (
@@ -53,12 +74,12 @@ if "%SUB_CHOICE%"=="" (
 
 REM Check if input is a number within range
 set /a TEST_NUM=%SUB_CHOICE% 2>nul
-if %TEST_NUM% LSS 1 (
+if !TEST_NUM! LSS 1 (
     echo Error: Invalid selection
     del %TEMP_SUBS%
     exit /b 1
 )
-if %TEST_NUM% GTR %SUB_COUNT% (
+if !TEST_NUM! GTR !SUB_COUNT! (
     echo Error: Selection out of range
     del %TEMP_SUBS%
     exit /b 1
@@ -77,23 +98,23 @@ for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
 REM Clean up temp file
 del %TEMP_SUBS%
 
-if "%SUBSCRIPTION_ID%"=="" (
+if "!SUBSCRIPTION_ID!"=="" (
     echo Error: Could not get subscription ID
     exit /b 1
 )
 
-echo Selected: %SUBSCRIPTION_NAME% [%SUBSCRIPTION_ID%]
+echo Selected: !SUBSCRIPTION_NAME! [!SUBSCRIPTION_ID!]
 
 REM Set the subscription
-echo Setting active subscription to: %SUBSCRIPTION_ID%
-az account set --subscription %SUBSCRIPTION_ID%
+echo Setting active subscription to: !SUBSCRIPTION_ID!
+az account set --subscription !SUBSCRIPTION_ID!
 
 if %errorlevel% neq 0 (
-    echo Error: Failed to set subscription %SUBSCRIPTION_ID%
+    echo Error: Failed to set subscription !SUBSCRIPTION_ID!
     exit /b 1
 )
 
-echo Successfully set subscription: %SUBSCRIPTION_ID%
+echo Successfully set subscription: !SUBSCRIPTION_ID!
 set /p CONTINUE="Do you wish to continue? (y/N): "
 if /i not "%CONTINUE%"=="y" (
     echo Operation cancelled.
@@ -285,7 +306,7 @@ echo New image version will be: %IMAGE_VERSION%
 
 REM Create gallery image version directly from VM
 echo Creating gallery image version from VM: %NEW_VM_NAME%
-CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version %IMAGE_VERSION% --virtual-machine "/subscriptions/%SUBSCRIPTION_ID%/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
+CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version %IMAGE_VERSION% --virtual-machine "/subscriptions/!SUBSCRIPTION_ID!/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
 
 if %errorlevel% equ 0 (
     echo Gallery image version %IMAGE_VERSION% created successfully
