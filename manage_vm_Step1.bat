@@ -225,7 +225,8 @@ if %errorlevel% equ 0 (
     echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
 ) else (
     REM Check second location: JWDillonProdGallery in JWDillonAppImagesRG (for ryan__brown@hotmail.com)
-    CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery --output none 2>nul
+    CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery
+    ECHO %errorlevel%
     if %errorlevel% equ 0 (
         set GALLERY_RESOURCE_GROUP=JWDillonAppImagesRG
         set GALLERY_NAME=JWDillonProdGallery
