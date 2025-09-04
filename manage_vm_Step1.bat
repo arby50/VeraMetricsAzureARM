@@ -218,16 +218,15 @@ REM Find the Azure Image Gallery
 echo Finding Azure Image Gallery...
 
 REM Check first location: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG (for ryan.brown@jwdillon.com)
-CALL az sig show --resource-group JWDillonVeraMetricsRG --gallery-name JWDillonVeraMetricsProdGallery --output none 2>nul
+CALL az sig show --resource-group JWDillonVeraMetricsRG --gallery-name JWDillonVeraMetricsProdGallery --query "name" -o tsv >nul 2>&1
 if %errorlevel% equ 0 (
     set GALLERY_RESOURCE_GROUP=JWDillonVeraMetricsRG
     set GALLERY_NAME=JWDillonVeraMetricsProdGallery
     echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
 ) else (
     REM Check second location: JWDillonProdGallery in JWDillonAppImagesRG (for ryan__brown@hotmail.com)
-    CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery
-    ECHO %errorlevel%
-    if %errorlevel% equ 0 (
+    CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery --query "name" -o tsv >nul 2>&1
+    if %errorlevel% leq 3 (
         set GALLERY_RESOURCE_GROUP=JWDillonAppImagesRG
         set GALLERY_NAME=JWDillonProdGallery
         echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
