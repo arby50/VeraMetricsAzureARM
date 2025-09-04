@@ -24,6 +24,31 @@ if "%AZURE_USER%"=="" (
 )
 
 echo You are logged in to Azure as: %AZURE_USER%
+
+REM List available subscriptions and let user select
+echo.
+echo Available subscriptions:
+az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output table
+
+echo.
+echo Please enter the subscription ID you want to use:
+set /p SUBSCRIPTION_ID="Subscription ID: "
+
+if "%SUBSCRIPTION_ID%"=="" (
+    echo Error: No subscription ID provided
+    exit /b 1
+)
+
+REM Set the subscription
+echo Setting active subscription to: %SUBSCRIPTION_ID%
+az account set --subscription %SUBSCRIPTION_ID%
+
+if %errorlevel% neq 0 (
+    echo Error: Failed to set subscription %SUBSCRIPTION_ID%
+    exit /b 1
+)
+
+echo Successfully set subscription: %SUBSCRIPTION_ID%
 set /p CONTINUE="Do you wish to continue? (y/N): "
 if /i not "%CONTINUE%"=="y" (
     echo Operation cancelled.
@@ -215,7 +240,7 @@ echo New image version will be: %IMAGE_VERSION%
 
 REM Create gallery image version directly from VM
 echo Creating gallery image version from VM: %NEW_VM_NAME%
-CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version %IMAGE_VERSION% --virtual-machine "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
+CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version %IMAGE_VERSION% --virtual-machine "/subscriptions/%SUBSCRIPTION_ID%/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
 
 if %errorlevel% equ 0 (
     echo Gallery image version %IMAGE_VERSION% created successfully
