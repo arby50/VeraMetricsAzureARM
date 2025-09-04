@@ -34,76 +34,27 @@ if /i not "%CONTINUE_LOGIN%"=="y" (
     exit /b 0
 )
 
-REM List available subscriptions and let user select
+REM Get first available subscription
 echo.
-echo Available subscriptions:
-
-REM Create temporary file to store subscription data
-set TEMP_SUBS=%TEMP%\azure_subs_%RANDOM%.txt
-az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output tsv > %TEMP_SUBS%
-
-REM Check if we got any subscriptions
-if not exist %TEMP_SUBS% (
-    echo Error: Could not retrieve subscription list
-    exit /b 1
+echo Getting first available subscription...
+for /f "tokens=1,2,3 delims=	" %%a in ('az account list --query "[0].{Name:name, SubscriptionId:id, State:state}" --output tsv') do (
+    set SUBSCRIPTION_NAME=%%a
+    set SUBSCRIPTION_ID=%%b
+    set SUBSCRIPTION_STATE=%%c
 )
-
-REM Display numbered list
-set SUB_COUNT=0
-echo.
-for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
-    set /a SUB_COUNT+=1
-    echo !SUB_COUNT!. %%a [%%b] - %%c
-)
-
-if !SUB_COUNT! EQU 0 (
-    echo Error: No subscriptions found
-    del %TEMP_SUBS%
-    exit /b 1
-)
-
-echo.
-set /p SUB_CHOICE="Please select subscription number (1-!SUB_COUNT!): "
-
-REM Validate input
-if "%SUB_CHOICE%"=="" (
-    echo Error: No selection made
-    del %TEMP_SUBS%
-    exit /b 1
-)
-
-REM Check if input is a number within range
-set /a TEST_NUM=%SUB_CHOICE% 2>nul
-if !TEST_NUM! LSS 1 (
-    echo Error: Invalid selection
-    del %TEMP_SUBS%
-    exit /b 1
-)
-if !TEST_NUM! GTR !SUB_COUNT! (
-    echo Error: Selection out of range
-    del %TEMP_SUBS%
-    exit /b 1
-)
-
-REM Get the subscription ID for the selected number
-set CURRENT_LINE=0
-for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
-    set /a CURRENT_LINE+=1
-    if !CURRENT_LINE! equ %SUB_CHOICE% (
-        set SUBSCRIPTION_ID=%%b
-        set SUBSCRIPTION_NAME=%%a
-    )
-)
-
-REM Clean up temp file
-del %TEMP_SUBS%
 
 if "!SUBSCRIPTION_ID!"=="" (
-    echo Error: Could not get subscription ID
+    echo Error: No subscriptions found
     exit /b 1
 )
 
-echo Selected: !SUBSCRIPTION_NAME! [!SUBSCRIPTION_ID!]
+echo Found subscription: !SUBSCRIPTION_NAME! [!SUBSCRIPTION_ID!] - !SUBSCRIPTION_STATE!
+
+set /p CONTINUE_SUB="Do you wish to continue with this subscription? (y/N): "
+if /i not "%CONTINUE_SUB%"=="y" (
+    echo Operation cancelled.
+    exit /b 0
+)
 
 REM Set the subscription
 echo Setting active subscription to: !SUBSCRIPTION_ID!
