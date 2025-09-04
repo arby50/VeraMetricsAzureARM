@@ -28,7 +28,9 @@ echo You are logged in to Azure as: %AZURE_USER%
 REM List available subscriptions and let user select
 echo.
 echo Available subscriptions:
-az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output table
+echo Name                  SubscriptionId                        State
+echo --------------------  ------------------------------------  -------
+az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output tsv | findstr /r ".*"
 
 echo.
 echo Please enter the subscription ID you want to use:
