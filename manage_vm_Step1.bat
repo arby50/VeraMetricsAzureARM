@@ -156,10 +156,10 @@ if %errorlevel% equ 0 (
     REM Get the public IP of the new VM
     for /f %%i in ('az vm show --resource-group %NEW_RESOURCE_GROUP_NAME% --name %NEW_VM_NAME% --show-details --query "publicIps" -o tsv') do set NEW_VM_IP=%%i
 
-    if not "%NEW_VM_IP%"=="" (
-        echo New VM Public IP: %NEW_VM_IP%
-        echo Connect with: C:\Windows\System32\OpenSSH\ssh.exe -i c:\Users\arby5\.ssh\CQL-test1_key.pem azureuser@172.190.115.44
-        echo Connect with: https://%NEW_VM_IP%
+    if not "!NEW_VM_IP!"=="" (
+        echo New VM Public IP: !NEW_VM_IP!
+        echo Connect with: C:\Windows\System32\OpenSSH\ssh.exe -i c:\Users\arby5\.ssh\CQL-test1_key.pem jwdillonAdmin@!NEW_VM_IP!
+        echo Connect with: https://!NEW_VM_IP!
     )
 ) else (
     echo Failed to create VM from disk
