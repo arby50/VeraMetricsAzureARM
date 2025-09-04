@@ -172,4 +172,33 @@ if %errorlevel% equ 0 (
     exit /b 1
 )
 
+REM Step 10: Find the Azure Image Gallery
+echo Finding Azure Image Gallery...
+
+REM Check first location: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG
+CALL az sig show --resource-group JWDillonVeraMetricsRG --gallery-name JWDillonVeraMetricsProdGallery --output none 2>nul
+if %errorlevel% equ 0 (
+    set GALLERY_RESOURCE_GROUP=JWDillonVeraMetricsRG
+    set GALLERY_NAME=JWDillonVeraMetricsProdGallery
+    echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
+) else (
+    REM Check second location: JWDillonProdGallery in JWDillonAppImagesRG
+    CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery --output none 2>nul
+    if %errorlevel% equ 0 (
+        set GALLERY_RESOURCE_GROUP=JWDillonAppImagesRG
+        set GALLERY_NAME=JWDillonProdGallery
+        echo Found gallery: %GALLERY_NAME% in resource group: %GALLERY_RESOURCE_GROUP%
+    ) else (
+        echo Error: Could not find Azure Image Gallery in either location
+        echo Checked: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG
+        echo Checked: JWDillonProdGallery in JWDillonAppImagesRG
+        exit /b 1
+    )
+)
+
+REM Step 11: Create gallery image version directly from VM
+echo Creating gallery image version from VM: %NEW_VM_NAME%
+set IMAGE_VERSION=1.0.36
+CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version %IMAGE_VERSION% --virtual-machine "/subscriptions/3ead16e8-d04a-458e-8953-1b8413f85b45/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
+
 echo VM creation process completed successfully!
