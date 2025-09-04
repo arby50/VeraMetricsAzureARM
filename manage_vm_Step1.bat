@@ -34,38 +34,30 @@ if /i not "%CONTINUE_LOGIN%"=="y" (
     exit /b 0
 )
 
-REM Get first available subscription
+REM Get currently active subscription
 echo.
-echo Getting first available subscription...
-for /f "tokens=1,2,3 delims=	" %%a in ('az account list --query "[0].{Name:name, SubscriptionId:id, State:state}" --output tsv') do (
+echo Getting currently active subscription...
+for /f "tokens=1,2,3 delims=	" %%a in ('az account show --query "{Name:name, SubscriptionId:id, State:state}" --output tsv') do (
     set SUBSCRIPTION_NAME=%%a
     set SUBSCRIPTION_ID=%%b
     set SUBSCRIPTION_STATE=%%c
 )
 
 if "!SUBSCRIPTION_ID!"=="" (
-    echo Error: No subscriptions found
+    echo Error: No active subscription found
     exit /b 1
 )
 
-echo Found subscription: !SUBSCRIPTION_NAME! [!SUBSCRIPTION_ID!] - !SUBSCRIPTION_STATE!
+echo Current active subscription: !SUBSCRIPTION_NAME! [!SUBSCRIPTION_ID!] - !SUBSCRIPTION_STATE!
 
 set /p CONTINUE_SUB="Do you wish to continue with this subscription? (y/N): "
 if /i not "%CONTINUE_SUB%"=="y" (
     echo Operation cancelled.
+    echo Run 'az account set --subscription [subscription-id]' to change subscriptions
     exit /b 0
 )
 
-REM Set the subscription
-echo Setting active subscription to: !SUBSCRIPTION_ID!
-az account set --subscription !SUBSCRIPTION_ID!
-
-if %errorlevel% neq 0 (
-    echo Error: Failed to set subscription !SUBSCRIPTION_ID!
-    exit /b 1
-)
-
-echo Successfully set subscription: !SUBSCRIPTION_ID!
+echo Using active subscription: !SUBSCRIPTION_ID!
 set /p CONTINUE="Do you wish to continue? (y/N): "
 if /i not "%CONTINUE%"=="y" (
     echo Operation cancelled.
