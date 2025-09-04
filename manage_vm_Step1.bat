@@ -28,18 +28,61 @@ echo You are logged in to Azure as: %AZURE_USER%
 REM List available subscriptions and let user select
 echo.
 echo Available subscriptions:
-echo Name                  SubscriptionId                        State
-echo --------------------  ------------------------------------  -------
-az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output tsv | findstr /r ".*"
+
+REM Create temporary file to store subscription data
+set TEMP_SUBS=%TEMP%\azure_subs_%RANDOM%.txt
+az account list --query "[].{Name:name, SubscriptionId:id, State:state}" --output tsv > %TEMP_SUBS%
+
+REM Display numbered list
+set SUB_COUNT=0
+echo.
+for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
+    set /a SUB_COUNT+=1
+    echo !SUB_COUNT!. %%a [%%b] - %%c
+)
 
 echo.
-echo Please enter the subscription ID you want to use:
-set /p SUBSCRIPTION_ID="Subscription ID: "
+set /p SUB_CHOICE="Please select subscription number (1-%SUB_COUNT%): "
 
-if "%SUBSCRIPTION_ID%"=="" (
-    echo Error: No subscription ID provided
+REM Validate input
+if "%SUB_CHOICE%"=="" (
+    echo Error: No selection made
+    del %TEMP_SUBS%
     exit /b 1
 )
+
+REM Check if input is a number within range
+set /a TEST_NUM=%SUB_CHOICE% 2>nul
+if %TEST_NUM% LSS 1 (
+    echo Error: Invalid selection
+    del %TEMP_SUBS%
+    exit /b 1
+)
+if %TEST_NUM% GTR %SUB_COUNT% (
+    echo Error: Selection out of range
+    del %TEMP_SUBS%
+    exit /b 1
+)
+
+REM Get the subscription ID for the selected number
+set CURRENT_LINE=0
+for /f "tokens=1,2,3 delims=	" %%a in (%TEMP_SUBS%) do (
+    set /a CURRENT_LINE+=1
+    if !CURRENT_LINE! equ %SUB_CHOICE% (
+        set SUBSCRIPTION_ID=%%b
+        set SUBSCRIPTION_NAME=%%a
+    )
+)
+
+REM Clean up temp file
+del %TEMP_SUBS%
+
+if "%SUBSCRIPTION_ID%"=="" (
+    echo Error: Could not get subscription ID
+    exit /b 1
+)
+
+echo Selected: %SUBSCRIPTION_NAME% [%SUBSCRIPTION_ID%]
 
 REM Set the subscription
 echo Setting active subscription to: %SUBSCRIPTION_ID%
