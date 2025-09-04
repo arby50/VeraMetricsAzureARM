@@ -143,9 +143,8 @@ if %errorlevel% equ 0 (
 echo Please manually remove the .ssh folder else VM marketplace verification fails->sudo rm -rf /home/jwdillonAdmin
 echo then remove the user->sudo waagent -deprovision+user -force
 set /p CONTINUE2="Do you complete those steps? (y/N): "
-if /i not "%CONTINUE2%"=="y" (
-    echo Operation cancelled.
-    exit /b 0
+while /i not "%CONTINUE2%"=="y" (
+    set /p CONTINUE2="Do you complete those steps? (y/N): "
 )
 
 echo VM creation process completed successfully!
