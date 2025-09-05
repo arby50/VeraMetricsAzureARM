@@ -236,11 +236,14 @@
 				},
                 "storageProfile": {
                     "imageReference": {
-						//"offer": "[variables('planInfo').offerID]",
-                        //"publisher": "[variables('planInfo').publisher]",
-                        //"sku": "[variables('planInfo').planID]",
-                        //"version": "latest"
-                        "id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngine', '1.0.33')]"
+											"offer": "[variables('planInfo').offerID]",
+											"publisher": "[variables('planInfo').publisher]",
+											"sku": "[variables('planInfo').planID]",
+											"version": "latest"
+											//ryan__brown@hotmail.com
+											//"id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngine', 'latest')]"
+											//ryan.brown@jwdillon.com
+											//"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngine', 'latest')]"
                     },
                     "osdisk": {
                         "name": "[concat(variables('vmName'), '-osDisk')]",

@@ -6,6 +6,8 @@ REM     -creates a snapshot of the VM
 REM     -creates a new disk from the snapshot
 REM     -creates a new VM from the new disk
 REM Usage: manage_vm_Step1.bat [vm-name]
+REM    for ryan.brown@jwdillon.com: manage_vm_Step1.bat verametrics-20250901-vm
+REM    for ryan__brown@hotmail.com: manage_vm_Step1.bat CQL-test1
 
 set VM_NAME=%1
 
