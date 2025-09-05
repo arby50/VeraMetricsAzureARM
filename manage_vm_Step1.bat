@@ -167,8 +167,8 @@ if %errorlevel% equ 0 (
     exit /b 1
 )
 
-echo Please manually remove the .ssh folder else VM marketplace verification fails->sudo rm -rf /home/jwdillonAdmin
-echo then remove the user->sudo waagent -deprovision+user -force
+echo Please manually remove the .ssh folder else VM marketplace verification fails-^>sudo rm -rf /home/jwdillonAdmin
+echo then remove the user-^>sudo waagent -deprovision+user -force
 set /p CONTINUE2="Do you complete those steps? (y/N): "
 :loop
 if /i not "%CONTINUE2%"=="y" (
