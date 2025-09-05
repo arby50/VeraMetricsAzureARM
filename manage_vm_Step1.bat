@@ -135,7 +135,6 @@ REM az snapshot wait
 
 if %errorlevel% equ 0 (
     echo Disk created successfully: %DISK_NAME%
-    echo You can now use this disk to create a new VM
 ) else (
     echo Failed to create disk from snapshot
     exit /b 1
@@ -158,7 +157,7 @@ if %errorlevel% equ 0 (
 
     if not "!NEW_VM_IP!"=="" (
         echo New VM Public IP: !NEW_VM_IP!
-        echo Connect with: C:\Windows\System32\OpenSSH\ssh.exe -i c:\Users\arby5\.ssh\CQL-test1_key.pem jwdillonAdmin@!NEW_VM_IP!
+        echo Connect with: C:\Windows\System32\OpenSSH\ssh.exe -i c:\Users\arby5\.ssh\CQL-test1_key.pem azureuser@!NEW_VM_IP!
         echo Connect with: https://!NEW_VM_IP!
     )
 ) else (
@@ -224,7 +223,7 @@ if %errorlevel% equ 0 (
 )
 
 REM Get latest version and increment
-echo Getting latest version from gallery image                         definition: VeraMetricsEngine
+echo Getting latest version from gallery image definition: VeraMetricsEngine
 for /f %%i in ('az sig image-version list --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --query "max([].name)" -o tsv') do set LATEST_VERSION=%%i
 
 if "%LATEST_VERSION%"=="" (
