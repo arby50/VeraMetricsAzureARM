@@ -6,7 +6,7 @@ REM     -creates a snapshot of the VM
 REM     -creates a new disk from the snapshot
 REM     -creates a new VM from the new disk
 REM Usage: manage_vm_Step1.bat [vm-name]
-REM    for ryan.brown@jwdillon.com: manage_vm_Step1.bat verametrics-20250901-vm
+REM    for ryan.brown@jwdillon.com: manage_vm_Step1.bat verametrics-20250906-vm
 REM    for ryan__brown@hotmail.com: manage_vm_Step1.bat CQL-test1
 
 set VM_NAME=%1
@@ -244,7 +244,7 @@ echo New image version will be: !IMAGE_VERSION!
 
 REM Create gallery image version directly from VM
 echo Creating gallery image version from VM: %NEW_VM_NAME%
-CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --gallery-image-version !IMAGE_VERSION! --virtual-machine "/subscriptions/!SUBSCRIPTION_ID!/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
+CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngineImageDefinition --gallery-image-version !IMAGE_VERSION! --virtual-machine "/subscriptions/!SUBSCRIPTION_ID!/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
 
 if %errorlevel% equ 0 (
     echo Gallery image version !IMAGE_VERSION! created successfully

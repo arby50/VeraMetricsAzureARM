@@ -10,8 +10,8 @@
 # it copes the ssh key from a safe location (/usr/local/support/) to the admin user's .ssh directory
 
 # Parse parameters
-RESOURCE_GROUP_ID="$1"
-SUBSCRIPTION_ID="$2"
+AZURE_RESOURCE_GROUP_ID="$1"
+MARKETPLACE_SUBSCRIPTION_ID="$2"
 
 # TODO: add this check back in
 # 20250815:Ryan->
@@ -67,15 +67,15 @@ systemctl restart ssh
 # cant create in jwdillonAdmin folder, perm problem, no idea why we can create a folder via mkdir but not a file
 #cat > /home/jwdillonAdmin/.env << EOF
 cat > /tmp/.env << EOF
-AZURE_RESOURCE_GROUP_ID=${RESOURCE_GROUP_ID}
-SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
+AZURE_RESOURCE_GROUP_ID=${AZURE_RESOURCE_GROUP_ID}
+MARKETPLACE_SUBSCRIPTION_ID=${MARKETPLACE_SUBSCRIPTION_ID}
 EOF
-cp /tmp/.env /home/jwdillonAdmin/.env/
+cp /tmp/.env /home/jwdillonAdmin/.env
 
 # Set ownership of the environment file
 chmod 600 /home/jwdillonAdmin/.env
 chown -R jwdillonAdmin:jwdillonAdmin /home/jwdillonAdmin/.env
 
 echo "SSH access setup complete for jwdillonAdmin"
-echo "VM configured with Resource Group ID: $RESOURCE_GROUP_ID"
-echo "VM configured with Subscription ID: $SUBSCRIPTION_ID"
+echo "VM configured with Resource Group ID: $AZURE_RESOURCE_GROUP_ID"
+echo "VM configured with Subscription ID: $MARKETPLACE_SUBSCRIPTION_ID"
