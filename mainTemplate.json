@@ -39,7 +39,7 @@
 	"variables": {
 		"adminUsername": "[parameters('adminUsername')]",
 		"planInfo": {
-            "planID": "verametrics_engine_vm_plan",
+            "planID": "verametrics_enginevm_plan",
             "offerID": "verametrics_engine",
             "publisher": "jwdillon_com"
         },
@@ -249,14 +249,14 @@
 				},
                 "storageProfile": {
                     "imageReference": {
-											"offer": "[variables('planInfo').offerID]",
-											"publisher": "[variables('planInfo').publisher]",
-											"sku": "[variables('planInfo').planID]",
-											"version": "latest"
-											//ryan__brown@hotmail.com
-											//"id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngine', 'latest')]"
-											//ryan.brown@jwdillon.com
-											//"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngine', 'latest')]"
+						"offer": "[variables('planInfo').offerID]",
+						"publisher": "[variables('planInfo').publisher]",
+						"sku": "[variables('planInfo').planID]",
+						"version": "latest"
+						//ryan__brown@hotmail.com
+						//"id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
+						//ryan.brown@jwdillon.com
+						//"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
                     },
                     "osdisk": {
                         "name": "[concat(variables('vmName'), '-osDisk')]",
