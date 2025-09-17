@@ -1,4 +1,3 @@
-
 {
     "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
     "handler": "Microsoft.Azure.CreateUIDef",
@@ -38,6 +37,16 @@
                         ],
                         "osPlatform": "Windows",
                         "count": 1
+                    },
+                    {
+                        "name": "appName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Application Name",
+                        "toolTip": "The name of the application for metered billing.",
+                        "defaultValue": "",
+                        "constraints": {
+                            "required": true
+                        }
                     }
                 ]
             }
@@ -45,7 +54,9 @@
         "outputs": {
             "vmSize": "[steps('vmConfig').vmSize]",
             "vmInstanceName": "[steps('vmConfig').vmInstanceName]",
-			"location": "[location()]"
+			"location": "[location()]",
+			"customerResourceGroupId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name)]",
+			"appName": "[steps('vmConfig').appName]"
         }
     }
 }

@@ -12,6 +12,7 @@
 # Parse parameters
 AZURE_RESOURCE_GROUP_ID="$1"
 MARKETPLACE_SUBSCRIPTION_ID="$2"
+MARKETPLACE_APP_NAME="$3"
 
 # TODO: add this check back in
 # 20250815:Ryan->
@@ -69,6 +70,7 @@ systemctl restart ssh
 cat > /tmp/.env << EOF
 AZURE_RESOURCE_GROUP_ID=${AZURE_RESOURCE_GROUP_ID}
 MARKETPLACE_SUBSCRIPTION_ID=${MARKETPLACE_SUBSCRIPTION_ID}
+MARKETPLACE_APP_NAME=${MARKETPLACE_APP_NAME}
 EOF
 cp /tmp/.env /home/jwdillonAdmin/.env
 

@@ -34,6 +34,19 @@
 			"metadata": {
 			"description": "Admin username for the VM"
 			}
+		},
+		"customerResourceGroupId": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().id]",
+			"metadata": {
+				"description": "The customer's resource group ID where the application is deployed"
+			}
+		},
+		"appName": {
+			"type": "string",
+			"metadata": {
+				"description": "The name of the managed application for metered billing"
+			}
 		}
 	},
 	"variables": {
@@ -308,7 +321,7 @@
 				"typeHandlerVersion": "2.1",
 				"autoUpgradeMinorVersion": true,
 				"settings": {
-					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', resourceGroup().id, '\" \"', subscription().id, '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
+					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', parameters('customerResourceGroupId'), '\" \"', subscription().id, '\" \"', parameters('appName'), '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
 				}
 			},
 			"dependsOn": [
