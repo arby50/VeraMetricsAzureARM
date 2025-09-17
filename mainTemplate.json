@@ -232,11 +232,11 @@
 			"apiVersion": "2023-09-01",
 			"name": "[variables('vmName')]",
 			"location": "[parameters('location')]",
-			// "plan": {
-            //     "name": "[variables('planInfo').planID]",
-            //     "product": "[variables('planInfo').offerID]",
-            //     "publisher": "[variables('planInfo').publisher]"
-            // },
+			"plan": {
+                "name": "[variables('planInfo').planID]",
+                "product": "[variables('planInfo').offerID]",
+                "publisher": "[variables('planInfo').publisher]"
+            },
 			"identity": {
 				"type": "UserAssigned",
 				"userAssignedIdentities": {
