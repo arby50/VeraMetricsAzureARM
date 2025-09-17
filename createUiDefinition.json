@@ -23,8 +23,8 @@
                         "defaultValue": "",
                         "constraints": {
                             "required": true,
-                            "regex": "^[a-z][a-z0-9-]{1,23}[a-z0-9]$",
-                            "validationMessage": "Must be 3-25 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and hyphens."
+                            "regex": "^[a-zA-Z][a-zA-Z0-9-]{1,23}[a-zA-Z0-9]$",
+                            "validationMessage": "Must be 3-25 characters, start with a letter, end with alphanumeric, and contain only letters, numbers, and hyphens."
                         }
                     },
                     {
@@ -45,7 +45,9 @@
                         "toolTip": "The name of the application for metered billing.",
                         "defaultValue": "",
                         "constraints": {
-                            "required": true
+                            "required": true,
+                            "regex": "^[a-zA-Z][a-zA-Z0-9-]{1,33}[a-zA-Z0-9]$",
+                            "validationMessage": "Must be 3-35 characters, start with a letter, end with alphanumeric, and contain only letters, numbers, and hyphens."
                         }
                     }
                 ]
