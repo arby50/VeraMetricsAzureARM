@@ -37,18 +37,6 @@
                         ],
                         "osPlatform": "Windows",
                         "count": 1
-                    },
-                    {
-                        "name": "appName",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Application Name",
-                        "toolTip": "The name of the application for metered billing.",
-                        "defaultValue": "",
-                        "constraints": {
-                            "required": true,
-                            "regex": "^[a-zA-Z][a-zA-Z0-9-]{1,33}[a-zA-Z0-9]$",
-                            "validationMessage": "Must be 3-35 characters, start with a letter, end with alphanumeric, and contain only letters, numbers, and hyphens."
-                        }
                     }
                 ]
             }
@@ -58,7 +46,7 @@
             "vmInstanceName": "[steps('vmConfig').vmInstanceName]",
 			"location": "[location()]",
 			"customerResourceGroupId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name)]",
-			"appName": "[steps('vmConfig').appName]"
+			"appName": "[basics('appName')]"
         }
     }
 }
