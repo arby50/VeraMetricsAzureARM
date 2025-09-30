@@ -4,18 +4,6 @@
     "version": "0.1.2-preview",
     "parameters": {
         "basics": [
-            {
-                "name": "applicationResourceName",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Application Name",
-                "toolTip": "The name for this managed application instance",
-                "defaultValue": "",
-                "constraints": {
-                    "required": true,
-                    "regex": "^[a-zA-Z][a-zA-Z0-9-]{1,63}[a-zA-Z0-9]$",
-                    "validationMessage": "Must be 3-65 characters, start with a letter, end with alphanumeric, and contain only letters, numbers, and hyphens."
-                }
-            }
         ],
         "steps": [
             {
