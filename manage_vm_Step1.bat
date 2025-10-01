@@ -208,14 +208,16 @@ CALL az sig show --resource-group JWDillonVeraMetricsRG --gallery-name JWDillonV
 if %errorlevel% equ 0 (
     set GALLERY_RESOURCE_GROUP=JWDillonVeraMetricsRG
     set GALLERY_NAME=JWDillonVeraMetricsProdGallery
-    echo Found gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
+    set IMAGE_DEFINITION=VeraMetricsEngineImageDefinition
+    echo Found image: !IMAGE_DEFINITION! in gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
 ) else (
     REM Check second location: JWDillonProdGallery in JWDillonAppImagesRG (for ryan__brown@hotmail.com)
     CALL az sig show --resource-group JWDillonAppImagesRG --gallery-name JWDillonProdGallery --query "name" -o tsv >nul 2>&1
     if %errorlevel% leq 3 (
         set GALLERY_RESOURCE_GROUP=JWDillonAppImagesRG
         set GALLERY_NAME=JWDillonProdGallery
-        echo Found gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
+        set IMAGE_DEFINITION=VeraMetricsEngine
+        echo Found image: !IMAGE_DEFINITION! in gallery: !GALLERY_NAME! in resource group: !GALLERY_RESOURCE_GROUP!
     ) else (
         echo Error: Could not find Azure Image Gallery in either location
         echo Checked: JWDillonVeraMetricsProdGallery in JWDillonVeraMetricsRG
@@ -225,8 +227,8 @@ if %errorlevel% equ 0 (
 )
 
 REM Get latest version and increment
-echo Getting latest version from gallery image definition: VeraMetricsEngine
-for /f %%i in ('az sig image-version list --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngine --query "max([].name)" -o tsv') do set LATEST_VERSION=%%i
+echo Getting latest version from gallery image definition: %IMAGE_DEFINITION%
+for /f %%i in ('az sig image-version list --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition %IMAGE_DEFINITION% --query "max([].name)" -o tsv') do set LATEST_VERSION=%%i
 
 if "%LATEST_VERSION%"=="" (
     echo No existing versions found, starting with 1.0.1
@@ -244,6 +246,7 @@ echo New image version will be: !IMAGE_VERSION!
 
 REM Create gallery image version directly from VM
 echo Creating gallery image version from VM: %NEW_VM_NAME%
+echo calling: CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngineImageDefinition --gallery-image-version !IMAGE_VERSION! --virtual-machine "/subscriptions/!SUBSCRIPTION_ID!/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
 CALL az sig image-version create --resource-group %GALLERY_RESOURCE_GROUP% --gallery-name %GALLERY_NAME% --gallery-image-definition VeraMetricsEngineImageDefinition --gallery-image-version !IMAGE_VERSION! --virtual-machine "/subscriptions/!SUBSCRIPTION_ID!/resourceGroups/%NEW_RESOURCE_GROUP_NAME%/providers/Microsoft.Compute/virtualMachines/%NEW_VM_NAME%" --location eastus --replica-count 1 --output none
 
 if %errorlevel% equ 0 (
