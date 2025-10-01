@@ -45,8 +45,7 @@
             "vmSize": "[steps('vmConfig').vmSize]",
             "vmInstanceName": "[steps('vmConfig').vmInstanceName]",
 			"location": "[location()]",
-			"customerResourceGroupId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name)]",
-            "appName": "[resourceGroup().managedBy]"
+			"customerResourceGroupId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name)]"
         }
     }
 }

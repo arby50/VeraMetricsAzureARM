@@ -3,10 +3,13 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"vmInstanceName": {
-			"value": "myTestApp20250825i"
+			"value": "myTestApp20250918b"
 		},
 		"vmSize": {
 			"value": "Standard_B4ms"
+		},
+		"customerResourceGroupId": {
+			"value": "veraRG20250918b"
 		}
 	}
 }

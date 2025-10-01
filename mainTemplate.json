@@ -44,6 +44,7 @@
 		},
 		"appName": {
 			"type": "string",
+			"defaultValue": "verametricsapp",
 			"metadata": {
 				"description": "The name of the managed application for metered billing"
 			}
