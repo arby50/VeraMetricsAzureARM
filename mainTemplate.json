@@ -41,17 +41,11 @@
 			"metadata": {
 				"description": "The customer's resource group ID where the application is deployed"
 			}
-		},
-		"appName": {
-			"type": "string",
-			"defaultValue": "verametricsapp",
-			"metadata": {
-				"description": "The name of the managed application for metered billing"
-			}
 		}
 	},
 	"variables": {
 		"adminUsername": "[parameters('adminUsername')]",
+		"appName": "[parameters('applicationResourceName')]",
 		"planInfo": {
             "planID": "verametrics_enginevm_plan",
             "offerID": "verametrics_engine",
@@ -322,7 +316,7 @@
 				"typeHandlerVersion": "2.1",
 				"autoUpgradeMinorVersion": true,
 				"settings": {
-					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', parameters('customerResourceGroupId'), '\" \"', subscription().id, '\" \"', parameters('appName'), '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
+					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', parameters('customerResourceGroupId'), '\" \"', subscription().id, '\" \"', variables('appName'), '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
 				}
 			},
 			"dependsOn": [
