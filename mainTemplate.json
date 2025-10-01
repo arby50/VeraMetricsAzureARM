@@ -41,6 +41,12 @@
 			"metadata": {
 				"description": "The customer's resource group ID where the application is deployed"
 			}
+		},
+		"applicationResourceName": {
+			"type": "string",
+			"metadata": {
+				"description": "The name of the managed application instance"
+			}
 		}
 	},
 	"variables": {
