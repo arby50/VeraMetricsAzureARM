@@ -41,19 +41,13 @@
 			"metadata": {
 				"description": "The customer's resource group ID where the application is deployed"
 			}
-		},
-		"applicationResourceName": {
-			"type": "string",
-			"metadata": {
-				"description": "The name of the managed application instance"
-			}
 		}
 	},
 	"variables": {
 		"adminUsername": "[parameters('adminUsername')]",
-		"appName": "[parameters('applicationResourceName')]",
+		"app1Name": "verametricsApp",
 		"planInfo": {
-            "planID": "verametrics_enginevm_plan",
+            "planID": "verametrics_engine_vm_usage_plan",
             "offerID": "verametrics_engine",
             "publisher": "jwdillon_com"
         },
@@ -263,14 +257,14 @@
 				},
                 "storageProfile": {
                     "imageReference": {
-						"offer": "[variables('planInfo').offerID]",
-						"publisher": "[variables('planInfo').publisher]",
-						"sku": "[variables('planInfo').planID]",
-						"version": "latest"
+						// "offer": "[variables('planInfo').offerID]",
+						// "publisher": "[variables('planInfo').publisher]",
+						// "sku": "[variables('planInfo').planID]",
+						// "version": "latest"
 						//ryan__brown@hotmail.com
 						//"id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
 						//ryan.brown@jwdillon.com
-						//"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
+						"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
                     },
                     "osdisk": {
                         "name": "[concat(variables('vmName'), '-osDisk')]",
@@ -322,7 +316,7 @@
 				"typeHandlerVersion": "2.1",
 				"autoUpgradeMinorVersion": true,
 				"settings": {
-					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', parameters('customerResourceGroupId'), '\" \"', subscription().id, '\" \"', variables('appName'), '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
+					"commandToExecute": "[concat('{ echo \"Starting script...\"; bash /usr/local/support/scriptSSHSetup.sh \"', parameters('customerResourceGroupId'), '\" \"', subscription().id, '\" \"', variables('app1Name'), '\"; echo \"script ended.\"; } >> /tmp/scriptSSHSetup.log 2>&1')]"
 				}
 			},
 			"dependsOn": [
