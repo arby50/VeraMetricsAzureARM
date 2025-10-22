@@ -107,9 +107,18 @@
     {
       "kind": "Associations",
       "properties": {
-        "displayName": "Test association resource type",
+        "displayName": "Virtual Machines",
         "version": "1.0.0",
         "targetResourceType": "Microsoft.Compute/virtualMachines",
+        "createUIDefinition": {}
+      }
+    },
+    {
+      "kind": "Associations",
+      "properties": {
+        "displayName": "Public IP Addresses",
+        "version": "1.0.0",
+        "targetResourceType": "Microsoft.Network/publicIPAddresses",
         "createUIDefinition": {}
       }
     }
