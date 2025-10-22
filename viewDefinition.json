@@ -1,0 +1,117 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/viewdefinition/0.0.1-preview/ViewDefinition.json#",
+  "contentVersion": "0.0.0.1",
+  "views": [
+    {
+      "kind": "Overview",
+      "properties": {
+        "header": "Welcome to your Azure Managed Application",
+        "description": "This managed application is for demo purposes only.",
+        "commands": [
+          {
+            "displayName": "Test Action",
+            "path": "testAction"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Metrics",
+      "properties": {
+        "displayName": "This is my metrics view",
+        "version": "1.0.0",
+        "charts": [
+          {
+            "displayName": "Sample chart",
+            "chartType": "Bar",
+            "metrics": [
+              {
+                "name": "Availability",
+                "aggregationType": "avg",
+                "resourceTagFilter": [
+                  "tag1"
+                ],
+                "resourceType": "Microsoft.Storage/storageAccounts",
+                "namespace": "Microsoft.Storage/storageAccounts"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "CustomResources",
+      "properties": {
+        "displayName": "Users",
+        "version": "1.0.0.0",
+        "resourceType": "users",
+        "createUIDefinition": {
+          "parameters": {
+            "steps": [
+              {
+                "name": "add",
+                "label": "Add user",
+                "elements": [
+                  {
+                    "name": "name",
+                    "label": "User's Full Name",
+                    "type": "Microsoft.Common.TextBox",
+                    "defaultValue": "",
+                    "toolTip": "Provide a full user name.",
+                    "constraints": {
+                      "required": true
+                    }
+                  },
+                  {
+                    "name": "location",
+                    "label": "User's Location",
+                    "type": "Microsoft.Common.TextBox",
+                    "defaultValue": "",
+                    "toolTip": "Provide a Location.",
+                    "constraints": {
+                      "required": true
+                    }
+                  }
+                ]
+              }
+            ],
+            "outputs": {
+              "name": "[steps('add').name]",
+              "properties": {
+                "FullName": "[steps('add').name]",
+                "Location": "[steps('add').location]"
+              }
+            }
+          }
+        },
+        "commands": [
+          {
+            "displayName": "Custom Context Action",
+            "path": "users/contextAction",
+            "icon": "Start"
+          }
+        ],
+        "columns": [
+          {
+            "key": "properties.FullName",
+            "displayName": "Full Name"
+          },
+          {
+            "key": "properties.Location",
+            "displayName": "Location",
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Associations",
+      "properties": {
+        "displayName": "Test association resource type",
+        "version": "1.0.0",
+        "targetResourceType": "Microsoft.Compute/virtualMachines",
+        "createUIDefinition": {}
+      }
+    }
+  ]
+}
