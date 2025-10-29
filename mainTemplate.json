@@ -328,6 +328,14 @@
 		"hostname": {
 			"type": "string",
 			"value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName')), '2023-09-01').dnsSettings.fqdn]"
+		},
+		"publicIPAddress": {
+			"type": "string",
+			"value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName')), '2023-09-01').ipAddress]"
+		},
+		"applicationUrl": {
+			"type": "string",
+			"value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName')), '2023-09-01').ipAddress)]"
 		}
 	}
 }

@@ -5,12 +5,24 @@
     {
       "kind": "Overview",
       "properties": {
-        "header": "Welcome to your Azure Managed Application",
-        "description": "This managed application is for demo purposes only.",
-        "commands": [
+        "header": "VeraMetrics Engine Application",
+        "description": "Your VeraMetrics Engine is deployed and ready to use. Click the link below to access the application.",
+        "commands": [],
+        "outputs": [
           {
-            "displayName": "Test Action",
-            "path": "testAction"
+            "key": "applicationUrl",
+            "label": "Application URL",
+            "type": "Hyperlink"
+          },
+          {
+            "key": "publicIPAddress",
+            "label": "Public IP Address",
+            "type": "String"
+          },
+          {
+            "key": "hostname",
+            "label": "Hostname (FQDN)",
+            "type": "String"
           }
         ]
       }
