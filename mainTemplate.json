@@ -257,14 +257,14 @@
 				},
                 "storageProfile": {
                     "imageReference": {
-						// "offer": "[variables('planInfo').offerID]",
-						// "publisher": "[variables('planInfo').publisher]",
-						// "sku": "[variables('planInfo').planID]",
-						// "version": "latest"
+						"offer": "[variables('planInfo').offerID]",
+						"publisher": "[variables('planInfo').publisher]",
+						"sku": "[variables('planInfo').planID]",
+						"version": "latest"
 						//ryan__brown@hotmail.com
 						//"id": "[resourceId('JWDillonAppImagesRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
 						//ryan.brown@jwdillon.com
-						"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
+						//"id": "[resourceId('JWDillonVeraMetricsRG', 'Microsoft.Compute/galleries/images/versions', 'JWDillonVeraMetricsProdGallery', 'VeraMetricsEngineImageDefinition', 'latest')]"
                     },
                     "osdisk": {
                         "name": "[concat(variables('vmName'), '-osDisk')]",
