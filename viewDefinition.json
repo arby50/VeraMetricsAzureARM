@@ -6,7 +6,7 @@
       "kind": "Overview",
       "properties": {
         "header": "VeraMetrics Engine Application",
-        "description": "Your VeraMetrics Engine is deployed and ready to use. Click the link below to access the application.",
+        "description": "Your VeraMetrics Engine is deployed and ready to use. Click the link below to access the application.  The Username:Password for your app are test:test",
         "commands": [],
         "outputs": [
           {
